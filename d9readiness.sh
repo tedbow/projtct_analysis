@@ -3,7 +3,7 @@ set -eux
 
 #This file is intended to be executed on the testbots.
 PROC_COUNT=`grep processor /proc/cpuinfo |wc -l`
-dpkg -i /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/parallel_20190622_all.deb
+sudo dpkg -i /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/parallel_20190622_all.deb
 
 #Ensure we've got the latest drupal.
 cd /var/lib/drupalci/drupal-checkout
