@@ -16,4 +16,4 @@ parallel /var/lib/drupalci/workspace/prepare.sh {} ::: {1..${PROC_COUNT}}
 # 1/2/3/4 correspond to the columns in the project listing file which should take the
 # following form:
 # ctools,ctools,3.x-dev,project_module
-time parallel --colsep ',' ./analyzer.sh "{1}" "{2}" "{3}" "{4}" "{%}" :::: projects.csv
+# time parallel --colsep ',' ./analyzer.sh "{1}" "{2}" "{3}" "{4}" "{%}" :::: projects.csv
