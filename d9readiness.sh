@@ -3,7 +3,7 @@ set -eux
 
 #This file is intended to be executed on the testbots.
 sudo composer selfupdate
-rm -rf /var/lib/drupalci/workspace/infrastructure || true
+
 rm -rf /var/lib/drupalci/workspace/phpstan-results || true
 
 PROC_COUNT=`grep processor /proc/cpuinfo |wc -l`
