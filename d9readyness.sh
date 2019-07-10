@@ -14,7 +14,7 @@ git pull
 #Setup the drupal dirs
 rm -rf /var/lib/drupalci/workspace/drupal-checkouts
 mkdir -p /var/lib/drupalci/workspace/drupal-checkouts
-parallel /var/lib/drupalci/workspace/install_phpstan.sh {} ::: {1..${PROC_COUNT}}
+parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/install_phpstan.sh {} ::: {1..${PROC_COUNT}}
 # Run the analyzers.
 # 1/2/3/4 correspond to the columns in the project listing file which should take the
 # following form:
