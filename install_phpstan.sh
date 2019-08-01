@@ -27,4 +27,4 @@ composer require mglaman/phpstan-drupal phpstan/phpstan-deprecation-rules --dev
 composer config repositories.patch vcs https://github.com/greg-1-anderson/drupal-finder
 composer require "webflo/drupal-finder:dev-find-drupal-drupal-root as 1.1"
 composer config prefer-stable false
-git add .;git commit -m "adds phpstan"
+git add .;git commit -q -m "adds phpstan"
