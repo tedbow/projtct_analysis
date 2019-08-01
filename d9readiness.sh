@@ -11,6 +11,8 @@ sudo dpkg -i /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/p
 
 #Ensure we've got the latest drupal.
 cd /var/lib/drupalci/drupal-checkout
+git config --global user.email "git@drupal.org"
+git config --global user.name "Drupalci Testbot"
 git fetch
 git checkout 8.8.x
 git pull

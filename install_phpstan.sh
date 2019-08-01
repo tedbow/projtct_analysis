@@ -25,3 +25,4 @@ EOF
 cd /var/lib/drupalci/workspace/drupal-checkouts/drupal$1
 composer require mglaman/phpstan-drupal phpstan/phpstan-deprecation-rules --dev
 composer config prefer-stable false
+git add .;git commit -m "adds phpstan"
