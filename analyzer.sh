@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -eux
 
 cd /var/lib/drupalci/workspace/drupal-checkouts/drupal$5
 COMPOSER_CACHE_DIR=/tmp/cache$5 composer --no-interaction --no-progress require drupal/$2 $3
