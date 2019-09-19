@@ -35,6 +35,7 @@ includes:
   - ./vendor/phpstan/phpstan-deprecation-rules/rules.neon
 EOF
 composer require mglaman/phpstan-drupal phpstan/phpstan-deprecation-rules --dev
+composer require drupal/core-recommended 8.8.x
 #composer config repositories.patch vcs https://github.com/greg-1-anderson/drupal-finder
 #composer require "webflo/drupal-finder:dev-find-drupal-drupal-root as 1.1"
 #composer config --unset repositories.patch
