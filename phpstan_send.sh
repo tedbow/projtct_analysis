@@ -21,4 +21,4 @@ WHERE prsv.tid = 7234
   AND prsv.supported = 1;" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /tmp/projects.tsv
 head /tmp/projects.tsv > /tmp/testfile.tsv
 
-curl https://dispatcher.drupalci.org/job/phpstan/build -F file0=@/tmp/testfile.tsv -F json='{"parameter": [{"name":"projects.csv", "file":"file0"}]}' -F token=${TOKEN}
+curl https://dispatcher.drupalci.org/job/phpstan/build -F file0=@/tmp/testfile.tsv -F json='{"parameter": [{"name":"projects.tsv", "file":"file0"}]}' -F token=${TOKEN}
