@@ -50,4 +50,4 @@ parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/insta
 # following form:
 # Project name, Composer Namespace, Branch, Project type, d9 readyness text, project usage count
 # ctools,ctools,3.x-dev,project_module, text, 100
-time parallel --colsep ',' /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/analyzer.sh "{1}" "{2}" "{3}" "{4}" "{%}" :::: /var/lib/drupalci/workspace/projects.csv 2>&1 > /var/lib/drupalci/workspace/phpstan_output.txt
+time parallel --colsep '\t' /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/analyzer.sh "{1}" "{2}" "{3}" "{4}" "{%}" :::: /var/lib/drupalci/workspace/projects.tsv 2>&1 > /var/lib/drupalci/workspace/phpstan_output.txt
