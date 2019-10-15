@@ -14,7 +14,7 @@ cd /var/lib/drupalci/drupal-checkout
 git config --global user.email "git@drupal.org"
 git config --global user.name "Drupalci Testbot"
 git fetch
-git checkout 8.8.x
+git checkout 8.9.x
 git pull
 
 cat <<EOF > phpstan.neon

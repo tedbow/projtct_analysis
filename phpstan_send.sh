@@ -18,7 +18,7 @@ FROM project_release_supported_versions prsv
 LEFT JOIN versioncontrol_labels vl ON vl.label_id = vrl.label_id
 WHERE prsv.tid = 7234
   AND pcnm.api_tid = 7234
-  AND prsv.supported = 1;" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /tmp/projects.tsv
-head /tmp/projects.tsv > /tmp/testfile.tsv
+  AND prsv.supported = 1;" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /tmp/testfile.tsv
+head /tmp/testfile.tsv > /tmp/projects.tsv
 
-curl https://dispatcher.drupalci.org/job/phpstan/build -F file0=@/tmp/testfile.tsv -F json='{"parameter": [{"name":"projects.tsv", "file":"file0"}]}' -F token=${TOKEN}
+curl https://dispatcher.drupalci.org/job/phpstan/build -F file0=@/tmp/projects.tsv -F json='{"parameter": [{"name":"projects.tsv", "file":"file0"}]}' -F token=${TOKEN}
