@@ -8,7 +8,8 @@ echo "SELECT fdfpmn.field_project_machine_name_value,
        n.type,
        fdfnmvi.field_next_major_version_info_value,
        puwr.count
-FROM project_release_supported_versions prsv
+FROM project_release_supported_versions prsv,
+vrl.release_nid
          LEFT JOIN field_data_field_project_machine_name fdfpmn ON fdfpmn.entity_id = prsv.nid
          LEFT JOIN field_data_field_next_major_version_info fdfnmvi ON fdfnmvi.entity_id = prsv.nid
          LEFT JOIN versioncontrol_release_labels vrl ON vrl.release_nid = prsv.latest_release
