@@ -7,9 +7,9 @@ echo "SELECT fdfpmn.field_project_machine_name_value,
        REGEXP_REPLACE(SUBSTRING_INDEX(vl.name,'8.x-',-1), '.x','.x-dev') as \`Composer\`,
        n.type,
        fdfnmvi.field_next_major_version_info_value,
-       puwr.count
+       puwr.count,
+       vrl.release_nid
 FROM project_release_supported_versions prsv,
-vrl.release_nid
          LEFT JOIN field_data_field_project_machine_name fdfpmn ON fdfpmn.entity_id = prsv.nid
          LEFT JOIN field_data_field_next_major_version_info fdfnmvi ON fdfnmvi.entity_id = prsv.nid
          LEFT JOIN versioncontrol_release_labels vrl ON vrl.release_nid = prsv.latest_release
