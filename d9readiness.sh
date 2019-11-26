@@ -16,6 +16,7 @@ git config --global user.name "Drupalci Testbot"
 git fetch
 git checkout 8.9.x
 git pull
+rm -rf vendor
 
 cat <<EOF > phpstan.neon
 parameters:
