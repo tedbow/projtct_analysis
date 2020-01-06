@@ -20,6 +20,8 @@ rm -rf vendor
 
 cat <<EOF > phpstan.neon
 parameters:
+  drupal:
+    drupal_root: %currentWorkingDirectory%
   customRulesetUsed: true
   reportUnmatchedIgnoredErrors: false
   # Ignore phpstan-drupal extension's rules.
