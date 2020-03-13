@@ -19,7 +19,7 @@ FROM project_release_supported_versions prsv
     LEFT JOIN project_composer_namespace_map pcnm ON pcnm.project_nid = fdfpmn.entity_id AND pcnm.component_name = fdfpmn.field_project_machine_name_value
     INNER JOIN versioncontrol_labels vl ON vl.label_id = vrl.label_id AND vl.name NOT LIKE '9.x-%'
     LEFT JOIN field_data_taxonomy_vocabulary_44 fdtv44 on prsv.nid = fdtv44.entity_id
-    LEFT JOIN (SELECT pcc.release_nid, GROUP_CONCAT(DISTINCT pcc.core_version_requirement) as `cvr` FROM project_composer_component pcc GROUP BY pcc.release_nid) AS coreversions ON coreversions.release_nid = vrl.release_nid
+    LEFT JOIN (SELECT pcc.release_nid, GROUP_CONCAT(DISTINCT pcc.core_version_requirement) as \`cvr\` FROM project_composer_component pcc GROUP BY pcc.release_nid) AS coreversions ON coreversions.release_nid = vrl.release_nid
 
 WHERE pcnm.category = 'current'
   AND prsv.supported = 1
