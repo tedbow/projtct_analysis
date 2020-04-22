@@ -1,0 +1,24 @@
+imports:
+  - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8-all-deprecations.yml" }
+  # includes:
+  # - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8.0-deprecations.yml" }
+  # - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8.5-deprecations.yml" }
+  # - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8.6-deprecations.yml" }
+  # - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8.7-deprecations.yml" }
+
+parameters:
+  autoload_paths:
+    - 'core'
+    - 'core/modules'
+    - 'modules'
+    - 'profiles'
+
+  file_extensions:
+    - module
+    - theme
+    - install
+    - profile
+    - inc
+    - engine
+
+services: ~
