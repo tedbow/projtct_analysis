@@ -14,7 +14,7 @@ if grep -q '<file name' /var/lib/drupalci/workspace/phpstan-results/$1.$3.phpsta
   git init
   git add .;git commit -q -m "git project before rector"
   cd /var/lib/drupalci/workspace/drupal-checkouts/drupal$5
-  php -d memory_limit=2G -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/rector process ${4#project_}s/contrib/$2
+  php -d memory_limit=2G -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/rector process --verbose ${4#project_}s/contrib/$2 &>  /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector_out
   cd ${4#project_}s/contrib/$2
   git diff > /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector.patch
   # Delete the file if it is empty.
