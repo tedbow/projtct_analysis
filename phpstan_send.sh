@@ -11,20 +11,16 @@ echo "SET group_concat_max_len = 1000000; SELECT fdfpmn.field_project_machine_na
        vrl.release_nid,
        coreversions.cvr
 FROM project_release_supported_versions prsv
-    LEFT JOIN field_data_field_project_machine_name fdfpmn ON fdfpmn.entity_id = prsv.nid
+    INNER JOIN field_data_field_project_machine_name fdfpmn ON fdfpmn.entity_id = prsv.nid
     LEFT JOIN field_data_field_next_major_version_info fdfnmvi ON fdfnmvi.entity_id = prsv.nid
-    LEFT JOIN versioncontrol_release_labels vrl ON vrl.release_nid = prsv.latest_release
-    INNER JOIN node n on n.nid = prsv.nid AND n.status = 1
+    INNER JOIN versioncontrol_release_labels vrl ON vrl.release_nid = prsv.latest_release
+    INNER JOIN node n on n.nid = prsv.nid AND n.status = 1 AND n.type IN ('project_module', 'project_theme')
     INNER JOIN field_data_field_release_category fdf_rc ON fdf_rc.entity_id = prsv.latest_release AND fdf_rc.field_release_category_value = 'current'
-    LEFT JOIN project_composer_namespace_map pcnm ON pcnm.project_nid = fdfpmn.entity_id AND pcnm.component_name = fdfpmn.field_project_machine_name_value
+    INNER JOIN project_composer_namespace_map pcnm ON pcnm.project_nid = fdfpmn.entity_id AND pcnm.component_name = fdfpmn.field_project_machine_name_value AND pcnm.category = 'current'
     INNER JOIN versioncontrol_labels vl ON vl.label_id = vrl.label_id AND vl.name NOT LIKE '9.x-%'
-    LEFT JOIN field_data_taxonomy_vocabulary_44 fdtv44 on prsv.nid = fdtv44.entity_id
+    INNER JOIN field_data_taxonomy_vocabulary_44 fdtv44 on prsv.nid = fdtv44.entity_id AND fdtv44.taxonomy_vocabulary_44_tid != 13032
     LEFT JOIN (SELECT pcc.release_nid, GROUP_CONCAT(CONCAT(pcc.name, ':\"', pcc.core_version_requirement, '\"')) as \`cvr\` FROM project_composer_component pcc GROUP BY pcc.release_nid) AS coreversions ON coreversions.release_nid = vrl.release_nid
-
-WHERE pcnm.category = 'current'
-  AND prsv.supported = 1
-  AND fdtv44.taxonomy_vocabulary_44_tid != 13032
-  AND n.type IN ('project_module', 'project_theme')
+WHERE prsv.supported = 1
 GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /tmp/projects.tsv
 
