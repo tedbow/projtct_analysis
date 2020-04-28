@@ -2,7 +2,7 @@
 set -uex
 TOKEN=$1
 
-echo "SELECT fdfpmn.field_project_machine_name_value,
+echo "SET group_concat_max_len = 1000000; SELECT fdfpmn.field_project_machine_name_value,
        pcnm.package_namespace,
        REGEXP_REPLACE(SUBSTRING_INDEX(vl.name,'8.x-',-1), '.x','.x-dev') as \`Composer\`,
        n.type,
