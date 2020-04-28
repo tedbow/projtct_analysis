@@ -14,7 +14,7 @@ FROM project_release_supported_versions prsv
     LEFT JOIN field_data_field_project_machine_name fdfpmn ON fdfpmn.entity_id = prsv.nid
     LEFT JOIN field_data_field_next_major_version_info fdfnmvi ON fdfnmvi.entity_id = prsv.nid
     LEFT JOIN versioncontrol_release_labels vrl ON vrl.release_nid = prsv.latest_release
-    LEFT JOIN node n on n.nid = prsv.nid
+    INNER JOIN node n on n.nid = prsv.nid AND n.status = 1
     INNER JOIN field_data_field_release_category fdf_rc ON fdf_rc.entity_id = prsv.latest_release AND fdf_rc.field_release_category_value = 'current'
     LEFT JOIN project_composer_namespace_map pcnm ON pcnm.project_nid = fdfpmn.entity_id AND pcnm.component_name = fdfpmn.field_project_machine_name_value
     INNER JOIN versioncontrol_labels vl ON vl.label_id = vrl.label_id AND vl.name NOT LIKE '9.x-%'
