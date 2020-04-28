@@ -28,6 +28,5 @@ WHERE pcnm.category = 'current'
   AND n.type IN ('project_module', 'project_theme')
 GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /tmp/projects.tsv
-#head /tmp/testfile.tsv > /tmp/projects.tsv
 
 curl https://dispatcher.drupalci.org/job/phpstan/build -F file0=@/tmp/projects.tsv -F json='{"parameter": [{"name":"projects.tsv", "file":"file0"}]}' -F token=${TOKEN}
