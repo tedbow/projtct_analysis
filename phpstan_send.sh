@@ -24,7 +24,6 @@ FROM project_release_supported_versions prsv
 WHERE pcnm.category = 'current'
   AND prsv.supported = 1
   AND fdtv44.taxonomy_vocabulary_44_tid != 13032
-  AND prsv.nid != 3060
   AND n.type IN ('project_module', 'project_theme')
 GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /tmp/projects.tsv
