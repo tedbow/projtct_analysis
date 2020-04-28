@@ -13,7 +13,8 @@ echo "SET group_concat_max_len = 1000000; SELECT fdfpmn.field_project_machine_na
 FROM project_release_supported_versions prsv
     INNER JOIN field_data_field_project_machine_name fdfpmn ON fdfpmn.entity_id = prsv.nid
     LEFT JOIN field_data_field_next_major_version_info fdfnmvi ON fdfnmvi.entity_id = prsv.nid
-    INNER JOIN versioncontrol_release_labels vrl ON vrl.release_nid = prsv.latest_release
+    LEFT JOIN (SELECT n.nid, fdf_rp.field_release_project_target_id project_nid, fdf_rv.field_release_version_value version FROM node n INNER JOIN field_data_field_release_project fdf_rp ON fdf_rp.entity_id = n.nid INNER JOIN field_data_field_release_version fdf_rv ON fdf_rv.entity_id = fdf_rp.entity_id WHERE n.status = 1) dev_release ON dev_release.project_nid = prsv.nid AND dev_release.version = concat(prsv.branch, 'x-dev')
+    INNER JOIN versioncontrol_release_labels vrl ON vrl.release_nid = coalesce(dev_release.nid, prsv.latest_release)
     INNER JOIN node n on n.nid = prsv.nid AND n.status = 1 AND n.type IN ('project_module', 'project_theme')
     INNER JOIN field_data_field_release_category fdf_rc ON fdf_rc.entity_id = prsv.latest_release AND fdf_rc.field_release_category_value = 'current'
     INNER JOIN project_composer_namespace_map pcnm ON pcnm.project_nid = fdfpmn.entity_id AND pcnm.component_name = fdfpmn.field_project_machine_name_value AND pcnm.category = 'current'
