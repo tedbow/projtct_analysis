@@ -2,6 +2,7 @@ imports:
   - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8-all-deprecations.yml" }
   # includes:
   # - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8.0-deprecations.yml" }
+  # - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8.4-deprecations.yml" }
   # - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8.5-deprecations.yml" }
   # - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8.6-deprecations.yml" }
   # - { resource: "vendor/palantirnet/drupal-rector/config/drupal-8/drupal-8.7-deprecations.yml" }
@@ -20,5 +21,12 @@ parameters:
     - profile
     - inc
     - engine
+
+  # Create `use` statements.
+  auto_import_names: true
+  # Do not convert `\Drupal` to `Drupal`, etc.
+  import_short_classes: false
+  # This will not import classes used in PHP DocBlocks, like in /** @var \Some\Class */
+  import_doc_blocks: false
 
 services: ~
