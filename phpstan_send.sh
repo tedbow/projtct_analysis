@@ -7,7 +7,7 @@ echo "SET group_concat_max_len = 1000000; SELECT fdfpmn.field_project_machine_na
        REGEXP_REPLACE(SUBSTRING_INDEX(vl.name,'8.x-',-1), '.x','.x-dev') as \`Composer\`,
        n.type,
        fdfnmvi.field_next_major_version_info_value,
-       (SELECT sum(count) FROM project_usage_week_release puwr INNER JOIN field_data_field_release_project fdf_rp ON fdf_rp.entity_id = puwr.nid INNER JOIN field_data_field_release_category fdf_rc ON fdf_rc.entity_id = fdf_rp.entity_id AND fdf_rc.field_release_category_value = 'current' WHERE fdf_rp.field_release_project_target_id = prsv.nid AND puwr.timestamp = (SELECT max(timestamp) FROM project_usage_week_project)),
+       (SELECT sum(count) FROM project_usage_week_release puwr INNER JOIN field_data_field_release_project fdf_rp ON fdf_rp.entity_id = puwr.nid INNER JOIN field_data_field_release_category fdf_rc ON fdf_rc.entity_id = fdf_rp.entity_id AND fdf_rc.field_release_category_value = 'current' WHERE fdf_rp.field_release_project_target_id = prsv.nid AND puwr.timestamp = (SELECT max(timestamp) FROM project_usage_week_release)),
        vrl.release_nid,
        coreversions.cvr
 FROM project_release_supported_versions prsv
