@@ -43,8 +43,7 @@ includes:
   - ./vendor/mglaman/phpstan-drupal/extension.neon
   - ./vendor/phpstan/phpstan-deprecation-rules/rules.neon
 EOF
-composer require mglaman/phpstan-drupal phpstan/phpstan-deprecation-rules:~0.11 phpstan/phpstan:~0.11 --dev
-composer require palantirnet/drupal-rector:0.5.2 --dev
+composer require palantirnet/drupal-rector:0.5.3 --dev
 composer require drupal/upgrade_status:2.6
 
 # Use the local package for updating info.yml files. This repo can not be symlink because of autoloaders.
