@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+use InfoUpdater\UpdateStatusXmlChecker;
+
+$possibleAutoloadPaths = [
+  // local dev repository
+  __DIR__ . '/../vendor/autoload.php',
+  // dependency
+  __DIR__ . '/../../../autoload.php',
+];
+$autoLoad = NULL;
+foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
+  if (file_exists($possibleAutoloadPath)) {
+    $autoLoad = $possibleAutoloadPath;
+    break;
+  }
+}
+if (empty($autoLoad)) {
+  throw new Exception("No autoload patch");
+}
+require_once $autoLoad;
+
+if (!isset($argv[1])) {
+  throw new Exception("Provide file");
+}
+$checker = new UpdateStatusXmlChecker($argv[1]);
+$checker->isInfoUpdatable() ? exit(0) : exit(1);

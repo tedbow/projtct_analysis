@@ -1,0 +1,16 @@
+{
+    "name": "drupalorg_infrastructure/project_analysis_utils",
+    "description": "Internal library for utilities",
+    "type": "library",
+    "require": {
+        "symfony/yaml": "*",
+        "composer/semver": "*"
+    },
+    "bin": ["bin/rector_needed", "bin/info_updatable", "bin/update_info", "bin/restore_nonrector_changes"],
+    "autoload": {
+        "psr-4": {
+            "InfoUpdater\\": "src/"
+        }
+    }
+
+}
