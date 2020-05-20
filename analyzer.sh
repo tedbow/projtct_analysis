@@ -7,6 +7,7 @@ function gitCommit() {
   cd -
 }
 create_patch=0
+composer_home=$(composer global config home)
 
 cd /var/lib/drupalci/workspace/drupal-checkouts/drupal$5
 #COMPOSER_CACHE_DIR=/tmp/cache$5 composer config repositories.patch vcs https://github.com/greg-1-anderson/core-relaxed
@@ -16,8 +17,8 @@ COMPOSER_CACHE_DIR=/tmp/cache$5 composer --no-interaction --no-progress require 
 # Ensure the directory was created where we thought it should be.
 if [[ -d "/var/lib/drupalci/workspace/drupal-checkouts/drupal$5/${4#project_}s/contrib/$2" ]]; then
 
-  sudo ~/.composer/vendor/bin/drush en $2 -y
-  sudo ~/.composer/vendor/bin/drush upgrade_status:checkstyle  $2 > /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.pre_rector.xml 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status_stderr
+  sudo $composer_home/vendor/bin/drush en $2 -y
+  sudo $composer_home/vendor/bin/drush upgrade_status:checkstyle  $2 > /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.pre_rector.xml 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status_stderr
 
   # Only run rector if we have some file messages in the XML.
   php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/rector_needed /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.pre_rector.xml
@@ -33,7 +34,7 @@ if [[ -d "/var/lib/drupalci/workspace/drupal-checkouts/drupal$5/${4#project_}s/c
     mv phpstan.neon.hide phpstan.neon
 
     # Check to see we can update the info file.
-    sudo ~/.composer/vendor/bin/drush upgrade_status:checkstyle  $2 > /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.post_rector.xml 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status_stderr
+    sudo $composer_home/vendor/bin/drush upgrade_status:checkstyle  $2 > /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.post_rector.xml 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status_stderr
     php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/info_updatable /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.post_rector.xml
     info_updatable_result=$?
   else

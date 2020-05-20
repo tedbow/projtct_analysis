@@ -56,9 +56,9 @@ composer require drupalorg_infrastructure/project_analysis_utils
 #composer config --unset repositories.patch
 find vendor -name .git -exec rm -rf {} \; || true
 cp /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/rector.yml rector.yml
-
-sudo ~/.composer/vendor/bin/drush si --db-url=sqlite://sites/default/files/.ht.sqlite -y
-sudo ~/.composer/vendor/bin/drush en upgrade_status -y
+composer_home=$(composer global config home)
+sudo $composer_home/vendor/bin/drush si --db-url=sqlite://sites/default/files/.ht.sqlite -y
+sudo $composer_home/vendor/bin/drush en upgrade_status -y
 git add sites/default/files/.ht.sqlite
 git add .;git commit -q -m "adds phpstan and drupal-rector and sqlite"
 
