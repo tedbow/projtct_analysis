@@ -2,11 +2,11 @@
 set -eux
 
 #This file is intended to be executed on the testbots.
-sudo composer selfupdate
+#sudo composer selfupdate
 
 # Upgrade to php7.2.
 # This must happen after updating composer or composer must be removed and reinstalled.
-sudo /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/upgrade_php.sh
+#sudo /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/upgrade_php.sh
 
 rm -rf /var/lib/drupalci/workspace/phpstan-results || true
 
@@ -43,7 +43,7 @@ includes:
   - ./vendor/mglaman/phpstan-drupal/extension.neon
   - ./vendor/phpstan/phpstan-deprecation-rules/rules.neon
 EOF
-composer require palantirnet/drupal-rector:0.5.3 --dev
+composer require palantirnet/drupal-rector:0.5.4 --dev
 composer require drupal/upgrade_status:2.6
 
 # Use the local package for updating info.yml files. This repo can not be symlink because of autoloaders.
@@ -55,6 +55,7 @@ composer require drupalorg_infrastructure/project_analysis_utils
 #composer config --unset repositories.patch
 find vendor -name .git -exec rm -rf {} \; || true
 cp /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/rector.yml rector.yml
+cp /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/rector-no-tests.yml rector-no-tests.yml
 composer_home=$(composer global config home)
 sudo $composer_home/vendor/bin/drush si --db-url=sqlite://sites/default/files/.ht.sqlite -y
 sudo $composer_home/vendor/bin/drush en upgrade_status -y
