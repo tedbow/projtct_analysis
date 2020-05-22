@@ -2,11 +2,11 @@
 set -eux
 
 #This file is intended to be executed on the testbots.
-#sudo composer selfupdate
+sudo composer selfupdate
 
 # Upgrade to php7.2.
 # This must happen after updating composer or composer must be removed and reinstalled.
-#sudo /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/upgrade_php.sh
+sudo /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/upgrade_php.sh
 
 rm -rf /var/lib/drupalci/workspace/phpstan-results || true
 
