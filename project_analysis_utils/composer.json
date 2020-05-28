@@ -11,7 +11,8 @@
         "bin/info_updatable",
         "bin/update_info",
         "bin/restore_nonrector_changes",
-        "bin/test_error"
+        "bin/test_error",
+        "bin/find_machinename"
     ],
     "autoload": {
         "psr-4": {

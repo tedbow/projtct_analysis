@@ -1,4 +1,8 @@
+#!/usr/bin/env php
 <?php
+
+use InfoUpdater\MachineNameFinder;
+
 $possibleAutoloadPaths = [
   // local dev repository
   __DIR__ . '/../vendor/autoload.php',
@@ -16,3 +20,8 @@ if (empty($autoLoad)) {
   throw new Exception("No autoload patch");
 }
 require_once $autoLoad;
+
+if (!isset($argv[1])) {
+  throw new Exception("Provide dir");
+}
+print MachineNameFinder::findMachineName($argv[1]);
