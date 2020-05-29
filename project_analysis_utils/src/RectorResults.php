@@ -7,13 +7,14 @@ namespace InfoUpdater;
  */
 class RectorResults {
 
+  protected const RESULT_DIR = '/var/lib/drupalci/workspace/phpstan-results';
   /**
    * @param $project_version
    *
    * @return bool
    */
   public static function errorInTest($project_version) {
-    $err_file = "/var/lib/drupalci/workspace/phpstan-results/$project_version.rector_stderr";
+    $err_file = static::RESULT_DIR . "/$project_version.rector_stderr";
     if (!file_exists($err_file)) {
       return FALSE;
     }
@@ -22,7 +23,7 @@ class RectorResults {
       return FALSE;
     }
 
-    $lines = file("/var/lib/drupalci/workspace/phpstan-results/$project_version.rector_out");
+    $lines = file(static::RESULT_DIR . "/$project_version.rector_out");
     $line = $lines[count($lines)-1];
     return stripos($line, '/tests/') !== FALSE;
   }

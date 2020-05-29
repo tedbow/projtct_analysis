@@ -1,0 +1,25 @@
+Rector 0.8.x-dev@d40cdea
+Config file: rector.yml
+
+[parsing] modules/contrib/abbrfilter/abbrfilter.install
+[parsing] modules/contrib/abbrfilter/abbrfilter.module
+[parsing] modules/contrib/abbrfilter/src/AbbrfilterData.php
+[parsing] modules/contrib/abbrfilter/src/Controller/AbbrfilterController.php
+[parsing] modules/contrib/abbrfilter/src/Form/AddAbbrfilterForm.php
+[parsing] modules/contrib/abbrfilter/src/Form/DeleteAbbrfilterForm.php
+[parsing] modules/contrib/abbrfilter/src/Form/EditAbbrfilterForm.php
+[parsing] modules/contrib/abbrfilter/src/Form/ExportAbbrfilterForm.php
+[parsing] modules/contrib/abbrfilter/src/Form/TestAbbrfilterForm.php
+[parsing] modules/contrib/abbrfilter/src/Plugin/Filter/AbbrfilterFilter.php
+[parsing] modules/contrib/abbrfilter/src/tests/src/Unit/AbbrFilterTest.php
+[refactoring] modules/contrib/abbrfilter/abbrfilter.install
+[refactoring] modules/contrib/abbrfilter/abbrfilter.module
+[refactoring] modules/contrib/abbrfilter/src/AbbrfilterData.php
+[refactoring] modules/contrib/abbrfilter/src/Controller/AbbrfilterController.php
+[refactoring] modules/contrib/abbrfilter/src/Form/AddAbbrfilterForm.php
+[refactoring] modules/contrib/abbrfilter/src/Form/DeleteAbbrfilterForm.php
+[refactoring] modules/contrib/abbrfilter/src/Form/EditAbbrfilterForm.php
+[refactoring] modules/contrib/abbrfilter/src/Form/ExportAbbrfilterForm.php
+[refactoring] modules/contrib/abbrfilter/src/Form/TestAbbrfilterForm.php
+[refactoring] modules/contrib/abbrfilter/src/Plugin/Filter/AbbrfilterFilter.php
+[refactoring] modules/contrib/abbrfilter/src/tests/src/Unit/AbbrFilterTest.php

@@ -1,0 +1,51 @@
+
+In NodeNameResolver.php line 180:
+                                                                               
+  [Rector\Core\Exception\ShouldNotHappenException]                             
+  Pick more specific node than "PhpParser\Node\Expr\MethodCall", e.g. "$node-  
+  >name"                                                                       
+                                                                               
+  Caused in "modules/contrib/node_revision_delete/tests/src/Unit/NodeRevision  
+  DeleteTest.php" file on line 654 on code "$this->getMockBuilder('Drupal\nod  
+  e_revision_delete\NodeRevisionDelete')->setConstructorArgs([$this->configFa  
+  ctory, $this->getStringTranslationStub(), $this->connection, $this->entityT  
+  ypeManager, $this->languageManager])->setMethods(['getConfiguredContentType  
+  s'])"                                                                        
+                                                                               
+  Look at vendor/palantirnet/drupal-rector/src/Rector/Deprecation/Base/GetMoc  
+  kBase.php:47                                                                 
+                                                                               
+
+Exception trace:
+  at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/packages/node-name-resolver/src/NodeNameResolver.php:180
+ Rector\NodeNameResolver\NodeNameResolver->reportInvalidNodeForName() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/packages/node-name-resolver/src/NodeNameResolver.php:95
+ Rector\NodeNameResolver\NodeNameResolver->getName() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/Rector/AbstractRector/NameResolverTrait.php:56
+ Rector\Core\Rector\AbstractRector->getName() at /var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/palantirnet/drupal-rector/src/Rector/Deprecation/Base/GetMockBase.php:47
+ DrupalRector\Rector\Deprecation\Base\GetMockBase->refactor() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/Rector/AbstractRector.php:124
+ Rector\Core\Rector\AbstractRector->enterNode() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:113
+ PhpParser\NodeTraverser->traverseNode() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:133
+ PhpParser\NodeTraverser->traverseNode() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:196
+ PhpParser\NodeTraverser->traverseArray() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:105
+ PhpParser\NodeTraverser->traverseNode() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:196
+ PhpParser\NodeTraverser->traverseArray() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:105
+ PhpParser\NodeTraverser->traverseNode() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:196
+ PhpParser\NodeTraverser->traverseArray() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:105
+ PhpParser\NodeTraverser->traverseNode() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:196
+ PhpParser\NodeTraverser->traverseArray() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/phpstan/phpstan/phpstan.phar/vendor/nikic/php-parser/lib/PhpParser/NodeTraverser.php:85
+ PhpParser\NodeTraverser->traverse() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/PhpParser/NodeTraverser/RectorNodeTraverser.php:58
+ Rector\Core\PhpParser\NodeTraverser\RectorNodeTraverser->traverse() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/Application/FileProcessor.php:106
+ Rector\Core\Application\FileProcessor->refactor() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/Application/RectorApplication.php:107
+ Rector\Core\Application\RectorApplication->Rector\Core\Application\{closure}() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/Application/RectorApplication.php:157
+ Rector\Core\Application\RectorApplication->tryCatchWrapper() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/Application/RectorApplication.php:108
+ Rector\Core\Application\RectorApplication->runOnFileInfos() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/Console/Command/ProcessCommand.php:138
+ Rector\Core\Console\Command\ProcessCommand->execute() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/vendor/symfony/console/Command/Command.php:228
+ _HumbugBox186ce906dbdb\Symfony\Component\Console\Command\Command->run() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/Console/Command/AbstractCommand.php:30
+ Rector\Core\Console\Command\AbstractCommand->run() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/vendor/symfony/console/Application.php:849
+ _HumbugBox186ce906dbdb\Symfony\Component\Console\Application->doRunCommand() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/vendor/symfony/console/Application.php:235
+ _HumbugBox186ce906dbdb\Symfony\Component\Console\Application->doRun() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/src/Console/Application.php:83
+ Rector\Core\Console\Application->doRun() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/vendor/symfony/console/Application.php:136
+ _HumbugBox186ce906dbdb\Symfony\Component\Console\Application->run() at phar:///var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector/bin/rector:48
+ require() at /var/lib/drupalci/workspace/drupal-checkouts/drupal5/vendor/rector/rector-prefixed/rector:6
+
+process [-n|--dry-run] [-a|--autoload-file AUTOLOAD-FILE] [--match-git-diff] [-o|--output-format [OUTPUT-FORMAT]] [--no-progress-bar] [--output-file OUTPUT-FILE] [--cache-debug] [--clear-cache] [--] [<source>...]
+
