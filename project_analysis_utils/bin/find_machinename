@@ -22,6 +22,9 @@ if (empty($autoLoad)) {
 require_once $autoLoad;
 
 if (!isset($argv[1])) {
-  throw new Exception("Provide dir");
+  throw new Exception("Provide module list");
 }
-print MachineNameFinder::findMachineName($argv[1]);
+if (!isset($argv[2])) {
+  throw new Exception("Provide project name");
+}
+print MachineNameFinder::findMachineName($argv[1], $argv[2]);

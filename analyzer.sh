@@ -18,7 +18,7 @@ if [[ -d "/var/lib/drupalci/workspace/drupal-checkouts/drupal$5/${4#project_}s/c
 
   php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/drush --root=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 config-set system.file path.temporary /var/lib/drupalci/workspace/drupal-checkouts/drupal$5/sites/default/files/temp
   # Some projects have a different machine name than there composer project name.
-  module_name=$(php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/find_machinename /var/lib/drupalci/workspace/drupal-checkouts/drupal$5/${4#project_}s/contrib/$2)
+  module_name=$(php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/find_machinename $6 $2)
 
   php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/drush --root=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 en $module_name -y
   php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/drush --root=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 upgrade_status:checkstyle  $module_name > /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.pre_rector.xml 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status_stderr1
