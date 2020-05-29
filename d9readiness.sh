@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eux
 
-
+PHPSTAN_RESULT_DIR='/var/lib/drupalci/workspace/phpstan-results';
 #This file is intended to be executed on the testbots.
 sudo composer selfupdate
 
