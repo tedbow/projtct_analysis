@@ -71,7 +71,7 @@ if [[ -d "/var/lib/drupalci/workspace/drupal-checkouts/drupal$5/${4#project_}s/c
     fi
   fi
   if [ $info_updatable_result -eq 0 ]; then
-      php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/update_info /var/lib/drupalci/workspace/drupal-checkouts/drupal$5/${4#project_}s/contrib/$2/$module_name.info.yml
+      php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/update_info /var/lib/drupalci/workspace/drupal-checkouts/drupal$5/${4#project_}s/contrib/$2/$module_name.info.yml $1.$3
       create_patch=1
   fi
 

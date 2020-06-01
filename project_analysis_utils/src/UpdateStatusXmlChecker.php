@@ -70,7 +70,7 @@ class UpdateStatusXmlChecker {
    * @return bool
    */
   public function isInfoUpdatable() {
-    $error_messages = $this->getErrorMessages();
+    $error_messages = $this->getMessages();
     // If there are more than one errors we can't update the info.yml file.
     if (count($error_messages) > 1) {
       return FALSE;
@@ -109,17 +109,23 @@ class UpdateStatusXmlChecker {
   }
 
   /**
-   * Gets all the error messages.
+   * Gets all the error messages or by level.
    *
-   * @return array
+   * @param string $severity_level
+   *
+   * @return string[]
    */
-  private function getErrorMessages() {
+  public function getMessages($severity_level = NULL) {
     $messages = [];
     if (!isset($this->xml)) {
       return $messages;
     }
     foreach ($this->xml->file as $file) {
       foreach ($file->error as $error) {
+        $severity = (string) $error->attributes()['severity'];
+        if ($severity_level && $severity_level !== $severity) {
+          continue;
+        }
         $message = (string) $error->attributes()['message'];
         if (!empty($message)) {
           $messages[] = $message;

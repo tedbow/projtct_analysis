@@ -3,8 +3,8 @@
 namespace InfoUpdater\Tests\Unit;
 
 use InfoUpdater\InfoUpdater;
+use InfoUpdater\Tests\Core\InfoParserDynamic;
 use InfoUpdater\Tests\TestBase;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -14,28 +14,145 @@ class InfoUpdaterTest extends TestBase {
 
   /**
    * @covers ::updateInfo
+   *
+   * @dataProvider providerUpdateInfoNew
    */
-  public function testNoCoreVersionRequirement() {
-    $temp_file = $this->createTempFixtureFile("no_core_version_requirement.info.yml");
+  public function testUpdateInfoNew($file, $project_version, $expected, $expected_remove_core) {
+    $temp_file = $this->createTempFixtureFile($file);
     $pre_yml = Yaml::parseFile($temp_file);
-    $this->assertFalse(isset($pre_yml['core_version_requirement']));
-    InfoUpdater::updateInfo($temp_file);
+    if ($file === 'core_version_requirement_empty.info.yml') {
+      $this->assertFalse(isset($pre_yml['core_version_requirement']));
+    }
+    InfoUpdater::updateInfo($temp_file, $project_version);
     $post_yml = Yaml::parseFile($temp_file);
-    $this->assertSame('^8 || ^9', $post_yml['core_version_requirement']);
+    $this->assertSame($expected, $post_yml['core_version_requirement']);
+
+    // The created info file should be able to be parsed by the core parser.
+    $core_parser = new InfoParserDynamic();
+    $core_info = $core_parser->parse($temp_file);
+    $this->assertSame($post_yml, $core_info);
+
+
+    if ($expected_remove_core) {
+      $this->assertArrayHasKey('core', $pre_yml);
+      unset($pre_yml['core']);
+      $this->assertArrayNotHasKey('core', $post_yml);
+    }
+    else {
+      $this->assertFalse(!empty($pre_yml['core']) && empty($post_yml['core']));
+    }
+    $pre_yml['core_version_requirement'] = $expected;
+    $pre_yml = asort($pre_yml);
+    $post_yml = asort($post_yml);
+    $this->assertSame($post_yml, $post_yml);
+
     unlink($temp_file);
   }
 
-  /**
-   * @covers ::updateInfo
-   */
-  public function testCoreVersionRequirement() {
-    $temp_file = $this->createTempFixtureFile("core_version_requirement.info.yml");
-    $pre_yml = Yaml::parseFile($temp_file);
-    $this->assertSame('^8.8', $pre_yml['core_version_requirement']);
-    InfoUpdater::updateInfo($temp_file);
-    $post_yml = Yaml::parseFile($temp_file);
-    $this->assertSame('^8.8 || ^9', $post_yml['core_version_requirement']);
-    unlink($temp_file);
+  public function providerUpdateInfoNew() {
+    return [
+      // Test environment_indicator.3.x-dev no deprecations removed for 8.8
+      // or 8.7.
+      '^8' => [
+        'core_version_requirement_empty.info.yml',
+        'environment_indicator.3.x-dev',
+        '^8 || ^9',
+        FALSE,
+      ],
+      '^8 existing' => [
+        'core_version_requirement.info.yml',
+        'environment_indicator.3.x-dev',
+        '^8 || ^9',
+        FALSE,
+      ],
+      '^8 existing 8.7' => [
+        'core_version_requirement_879.info.yml',
+        'environment_indicator.3.x-dev',
+        '^8.7.9 || ^9',
+        FALSE,
+      ],
+      '^8 existing 8.8.3' => [
+        'core_version_requirement_883.info.yml',
+        'environment_indicator.3.x-dev',
+        '^8.8.3 || ^9',
+        FALSE,
+      ],
+      // Remove texbar.1.x-dev 8.7 not 8.8
+      '8.7.7' => [
+        'core_version_requirement_empty.info.yml',
+        'texbar.1.x-dev',
+        '^8.7.7 || ^9',
+        TRUE,
+      ],
+      '8.7.7 existing ^8' => [
+        'core_version_requirement.info.yml',
+        'texbar.1.x-dev',
+        '^8.7.7 || ^9',
+        TRUE,
+      ],
+      '8.7.7 existing ^8.7.9' => [
+        'core_version_requirement_879.info.yml',
+        'texbar.1.x-dev',
+        '^8.7.9 || ^9',
+        FALSE,
+      ],
+      '8.7.7 existing ^8.8.3' => [
+        'core_version_requirement_883.info.yml',
+        'texbar.1.x-dev',
+        '^8.8.3 || ^9',
+        FALSE,
+      ],
+      // Test twitter_embed_field.1.x-dev removed 8.8 but not 8.7
+      '^8.8' => [
+        'core_version_requirement_empty.info.yml',
+        'twitter_embed_field.1.x-dev',
+        '^8.8 || ^9',
+        TRUE,
+      ],
+      '^8.8 existing ^8' => [
+        'core_version_requirement.info.yml',
+        'twitter_embed_field.1.x-dev',
+        '^8.8 || ^9',
+        TRUE,
+      ],
+      '^8.8 existing 8.7' => [
+        'core_version_requirement_879.info.yml',
+        'twitter_embed_field.1.x-dev',
+        '^8.8 || ^9',
+        FALSE,
+      ],
+      '^8.8 existing 8.8.3' => [
+        'core_version_requirement_883.info.yml',
+        'twitter_embed_field.1.x-dev',
+        '^8.8.3 || ^9',
+        FALSE,
+      ],
+      // Test twitter_embed_field.1.x-dev removed 8.8 and 8.7
+      '8.8 + 8.7' => [
+        'core_version_requirement_empty.info.yml',
+        'widget_engine.1.x-dev',
+        '^8.8 || ^9',
+        TRUE,
+      ],
+      '8.8 + 8.7 existing ^8' => [
+        'core_version_requirement.info.yml',
+        'widget_engine.1.x-dev',
+        '^8.8 || ^9',
+        TRUE,
+      ],
+      '8.8 + 8.7 existing ^8.7.9' => [
+        'core_version_requirement_879.info.yml',
+        'widget_engine.1.x-dev',
+        '^8.8 || ^9',
+        FALSE,
+      ],
+      '8.8 + 8.7 existing ^8.8.3' => [
+        'core_version_requirement_883.info.yml',
+        'widget_engine.1.x-dev',
+        '^8.8.3 || ^9',
+        FALSE,
+      ],
+    ];
   }
 
   /**

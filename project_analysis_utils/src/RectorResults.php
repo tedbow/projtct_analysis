@@ -5,22 +5,7 @@ namespace InfoUpdater;
 /**
  * Utility Class to check XML files produced by rector.
  */
-class RectorResults {
-
-  /**
-   * Gets the results directory.
-   *
-   * @return string
-   * @throws \Exception
-   */
-  protected static function getResultsDir() {
-    $dir = getenv('PHPSTAN_RESULT_DIR');
-    if (empty($dir)) {
-      throw new \Exception('PHPSTAN_RESULT_DIR not set');
-    }
-    return $dir;
-  }
-
+class RectorResults extends ResultProcessorBase {
 
   /**
    * @param $project_version
