@@ -1,0 +1,30 @@
+diff --git a/both_change.unknown b/both_change.unknown
+index f58e5ce..0067ea9 100644
+--- a/both_change.unknown
++++ b/both_change.unknown
+@@ -1,5 +1,5 @@
+-{
++ {
++ 
++Tricky-real
+ 
+-Tricky
+-
+-}
+\ No newline at end of file
++} 
+\ No newline at end of file
+diff --git a/whitespace_only_change.unknown b/whitespace_only_change.unknown
+index 4930d9d..53987c0 100644
+--- a/whitespace_only_change.unknown
++++ b/whitespace_only_change.unknown
+@@ -1,5 +1,5 @@
+-{
+-
++ {
++ 
+ This is a file
+ 
+-}
+\ No newline at end of file
++} 

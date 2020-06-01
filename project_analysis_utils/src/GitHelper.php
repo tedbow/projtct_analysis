@@ -9,7 +9,7 @@ namespace InfoUpdater;
  */
 class GitHelper {
 
-  private function shellExecSplit($string) {
+  public function shellExecSplit($string) {
     $output = shell_exec($string);
     $output = preg_split('/\n+/', trim($output));
     $output = array_map(function ($line) {
@@ -23,8 +23,10 @@ class GitHelper {
   /**
    * Restores any file that only has change not made by rector.
    *
-   * Rector has a bug where it changes some lines that aren't related to any
-   * rules. https://github.com/rectorphp/rector/issues/3375
+   * Currently this method just looks for files where all the changes lines only
+   * contain spaces, { or }. Rector has a bug where it changes some lines
+   * that aren't related to any rules.
+   * https://github.com/rectorphp/rector/issues/3375
    *
    * @param string $dir
    *   The working directory to use.
@@ -36,15 +38,16 @@ class GitHelper {
       return;
     }
     $files = $this->shellExecSplit('git diff --name-only');
+    // Match any line that starts with + or - and has no other characters
+    // except space, * , / or {
+    $pattern = '/^[\+\-].*[^\/* {}].*/';
     foreach ($files as $file) {
       $diff = $this->shellExecSplit("git diff $file");
       $diff = array_splice($diff, 5);
-      // Match any line that starts with + or - and has no other characters
-      // except space, * , / or {
-      $p = '/^[\+\-].*[^\/* {].*/';
+
       $rector_change = FALSE;
       foreach ($diff as $diff_line) {
-        if (preg_match($p, $diff_line)) {
+        if (preg_match($pattern, $diff_line)) {
           $rector_change = TRUE;
           break;
         }
