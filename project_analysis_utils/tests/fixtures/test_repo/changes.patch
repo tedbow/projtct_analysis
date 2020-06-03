@@ -1,3 +1,59 @@
+diff --git a/JustUseChangesClass.php b/JustUseChangesClass.php
+index db239c1..c0b95c6 100644
+--- a/JustUseChangesClass.php
++++ b/JustUseChangesClass.php
+@@ -2,16 +2,19 @@
+ 
+ namespace Test\Name\Space;
+ 
++use http\Exception\BadConversionException;
++use http\Exception\BadHeaderException;
++
+ class JustUseChangesClass {
+ 
+ 
+   /**
+    * JustUseChangesClass constructor.
+    */
+-  public function __construct(\http\Exception\BadConversionException $classDog) {
++  public function __construct(BadConversionException $classDog) {
+   }
+ 
+-  public function doThat(\http\Exception\BadHeaderException $bad) {
++  public function doThat(BadHeaderException $bad) {
+ 
+   }
+ }
+\ No newline at end of file
+diff --git a/UseChangesAndOthers.php b/UseChangesAndOthers.php
+index 5416a94..d582da0 100644
+--- a/UseChangesAndOthers.php
++++ b/UseChangesAndOthers.php
+@@ -2,16 +2,21 @@
+ 
+ namespace Test\Name\Space;
+ 
++use http\Exception\BadConversionException;
++use http\Exception\BadHeaderException;
++
+ class UseChangesAndOthers {
+ 
+ 
+   /**
+    * JustUseChangesClass constructor.
+    */
+-  public function __construct(\http\Exception\BadConversionException $classDog) {
++  public function __construct(BadConversionException $classDog) {
++    throw new \Exception("bed");
+   }
+ 
+-  public function doThat(\http\Exception\BadHeaderException $bad) {
++  public function doThat(BadHeaderException $bad) {
+ 
++    // Some other change
+   }
+ }
+\ No newline at end of file
 diff --git a/both_change.unknown b/both_change.unknown
 index f58e5ce..0067ea9 100644
 --- a/both_change.unknown

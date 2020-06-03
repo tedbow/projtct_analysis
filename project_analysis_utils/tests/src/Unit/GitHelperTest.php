@@ -31,7 +31,7 @@ class GitHelperTest extends TestBase {
       $this->assertTrue(copy($file_path, $temp_repo . "/$file"));
       $copied_files++;
     }
-    self::assertSame(4, $copied_files);
+    self::assertSame(6, $copied_files);
     chdir($temp_repo);
     $helper = new GitHelper();
     $init = $helper->shellExecSplit('git init');
@@ -44,6 +44,8 @@ class GitHelperTest extends TestBase {
     $diff_files = $helper->shellExecSplit('git diff --name-only');
     $this->assertSame(
       [
+        'JustUseChangesClass.php',
+        'UseChangesAndOthers.php',
         'both_change.unknown',
         'whitespace_only_change.unknown',
       ],
@@ -53,6 +55,7 @@ class GitHelperTest extends TestBase {
     $diff_files = $helper->shellExecSplit('git diff --name-only');
     $this->assertSame(
       [
+        'UseChangesAndOthers.php',
         'both_change.unknown',
       ],
       $diff_files
