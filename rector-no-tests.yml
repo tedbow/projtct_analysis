@@ -28,6 +28,7 @@ parameters:
   import_short_classes: false
   # This will not import classes used in PHP DocBlocks, like in /** @var \Some\Class */
   import_doc_blocks: false
+  drupal_rector_notices_as_comments: true
   exclude_paths:
     - 'modules/contrib/upgrade_status'
     - '*/tests/*'
