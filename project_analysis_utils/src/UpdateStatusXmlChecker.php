@@ -70,14 +70,30 @@ class UpdateStatusXmlChecker {
    * @return bool
    */
   public function isInfoUpdatable() {
-    $error_messages = $this->getMessages();
-    // If there are more than one errors we can't update the info.yml file.
-    if (count($error_messages) > 1) {
+    if (empty($this->xml)) {
+      // If we don't have the upgrade_status xml we can't determine if we
+      // should update.
       return FALSE;
     }
-    $error_message = array_pop($error_messages);
-    // If the only message if is for the info.yml file we can update it.
-    return strpos($error_message, '.info.yml to designate that the module is compatible with Drupal 9. See https://drupal.org/node/3070687') !== FALSE;
+    if (count($this->xml->file) !== 1) {
+      // If there is problem with more than 1 file we can't update.
+      return FALSE;
+    }
+    foreach ($this->xml->file as $file) {
+      $parts = explode('.', (string) $file->attributes()->name);
+      $ext = array_pop($parts);
+      $info = array_pop($parts);
+      // Make sure this is an 'info.yml' file.
+      if ($ext === 'yml' && $info === 'info') {
+        if (count($file->error) === 1) {
+          foreach ($file->error as $error) {
+            $message = (string) $error->attributes()['message'];
+            return preg_match('/core_version_requirement/', $message) === 1;
+          }
+        }
+      }
+    }
+    return FALSE;
   }
 
   private function isPhpfile(\SimpleXMLElement $file) {
