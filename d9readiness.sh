@@ -44,7 +44,7 @@ includes:
   - ./vendor/phpstan/phpstan-deprecation-rules/rules.neon
 EOF
 composer require palantirnet/drupal-rector:0.5.6 --dev
-composer require drupal/upgrade_status:2.7
+composer require drupal/upgrade_status:2.8
 
 
 # Use the local package for updating info.yml files. This repo can not be symlink because of autoloaders.
