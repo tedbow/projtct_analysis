@@ -3,6 +3,7 @@ sudo apt-get remove php* -y
 sudo rm -r /var/lib/apt/lists/*
 # sudo rm /etc/apt/trusted.gpg.d/php.gpg
 sudo curl -s -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+sudo curl -s -o /etc/apt/trusted.gpg.d/yarn.gpg https://dl.yarnpkg.com/debian/pubkey.gpg
 sudo apt-get update
 
 
