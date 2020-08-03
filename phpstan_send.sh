@@ -25,4 +25,11 @@ WHERE prsv.supported = 1
 GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /tmp/projects.tsv
 
-curl https://dispatcher.drupalci.org/job/phpstan/build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F file0=@/tmp/projects.tsv -F json='{"parameter": [{"name":"projects.tsv", "file":"file0"}]}' -F token="${TOKEN}"
+
+split -n4 -d /tmp/projects.tsv /tmp/projects
+
+for i in {0..3};
+do
+mv /tmp/projects0${i} /tmp/projects0${i}.tsv
+curl https://dispatcher.drupalci.org/job/phpstan/build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F file0=@/tmp/projects0${i}.tsv -F json='{"parameter": [{"name":"projects.tsv", "file":"file0"}]}' -F token="${TOKEN}"
+done
