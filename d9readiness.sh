@@ -50,7 +50,7 @@ composer --no-interaction --no-progress require drupal/upgrade_status:2.8
 # Use the local package for updating info.yml files. This repo can not be symlink because of autoloaders.
 composer config repositories.local '{"type": "path", "url": "/var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_analysis_utils", "options": { "symlink": false}}'
 composer --no-interaction --no-progress require drupalorg_infrastructure/project_analysis_utils --no-progress
-composer --no-interaction --no-progress equire drush/drush:9.7.2 --no-progress
+composer --no-interaction --no-progress require drush/drush:9.7.2 --no-progress
 
 #composer config repositories.patch vcs https://github.com/greg-1-anderson/drupal-finder
 #composer require "webflo/drupal-finder:dev-find-drupal-drupal-root as 1.1"
