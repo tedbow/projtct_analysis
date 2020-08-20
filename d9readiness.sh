@@ -43,7 +43,7 @@ includes:
   - ./vendor/mglaman/phpstan-drupal/extension.neon
   - ./vendor/phpstan/phpstan-deprecation-rules/rules.neon
 EOF
-composer -q require palantirnet/drupal-rector:0.5.6 --dev
+composer require palantirnet/drupal-rector:0.5.6 --dev
 composer -q require drupal/upgrade_status:2.8
 
 
