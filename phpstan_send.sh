@@ -28,7 +28,7 @@ ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-col
 
 split -n16 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
 
-for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects??.tsv`;
+for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects??`;
 do
 
 mv ${i} ${i}.tsv
