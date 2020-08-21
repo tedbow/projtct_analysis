@@ -32,5 +32,5 @@ for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects??`;
 do
 
 mv ${i} ${i}.tsv
-curl https://dispatcher.drupalci.org/job/k8stestjob//build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F json='{"parameter": [{"name":"FILENAME", "value":"'${i#/var/www/drupal.org/htdocs/files/project_analysis/}.tsv'"}]}' -F token="${TOKEN}"
+curl https://dispatcher.drupalci.org/job/project_analysis//build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F json='{"parameter": [{"name":"FILENAME", "value":"'${i#/var/www/drupal.org/htdocs/files/project_analysis/}.tsv'"}]}' -F token="${TOKEN}"
 done
