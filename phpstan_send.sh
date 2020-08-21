@@ -26,10 +26,11 @@ GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv
 
 
-split -n4 -d /tmp/projects.tsv /tmp/projects
+split -n4 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
 
-for i in {0..3};
+for i in {0..15};
 do
-mv /tmp/projects0${i} /tmp/projects0${i}.tsv
-curl https://dispatcher.drupalci.org/job/phpstan/build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F file0=@/tmp/projects0${i}.tsv -F json='{"parameter": [{"name":"projects.tsv", "file":"file0"}]}' -F token="${TOKEN}"
+
+mv /var/www/drupal.org/htdocs/files/project_analysis/projects0${i} /var/www/drupal.org/htdocs/files/project_analysis/projects0${i}.tsv
+curl https://dispatcher.drupalci.org/job/k8stestjob//build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" --data-urlencode json='{"parameter": [{"name":"FILENAME", "value":"'projects0${i}.tsv'"}]}' -F token="${TOKEN}"
 done
