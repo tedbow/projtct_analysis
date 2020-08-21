@@ -28,9 +28,9 @@ ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-col
 
 split -n16 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
 
-for i in {0..15};
+for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects??.tsv`;
 do
 
-mv /var/www/drupal.org/htdocs/files/project_analysis/projects0${i} /var/www/drupal.org/htdocs/files/project_analysis/projects0${i}.tsv
-curl https://dispatcher.drupalci.org/job/k8stestjob//build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F json='{"parameter": [{"name":"FILENAME", "value":"'projects0${i}.tsv'"}]}' -F token="${TOKEN}"
+mv ${i} ${i}.tsv
+curl https://dispatcher.drupalci.org/job/k8stestjob//build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F json='{"parameter": [{"name":"FILENAME", "value":"'${i#/var/www/drupal.org/htdocs/files/project_analysis/}.tsv'"}]}' -F token="${TOKEN}"
 done
