@@ -32,5 +32,5 @@ for i in {0..15};
 do
 
 mv /var/www/drupal.org/htdocs/files/project_analysis/projects0${i} /var/www/drupal.org/htdocs/files/project_analysis/projects0${i}.tsv
-curl https://dispatcher.drupalci.org/job/k8stestjob//build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" --data-urlencode json='{"parameter": [{"name":"FILENAME", "value":"'projects0${i}.tsv'"}]}' -F token="${TOKEN}"
+curl https://dispatcher.drupalci.org/job/k8stestjob//build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F json='{"parameter": [{"name":"FILENAME", "value":"'projects0${i}.tsv'"}]}' -F token="${TOKEN}"
 done
