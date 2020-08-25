@@ -5,8 +5,6 @@ export PHPSTAN_RESULT_DIR="/var/lib/drupalci/workspace/phpstan-results"
 
 #This file is intended to be executed on the testbot docker container.
 
-rm -rf /var/lib/drupalci/workspace/phpstan-results || true
-
 PROC_COUNT=`grep processor /proc/cpuinfo |wc -l`
 parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/install_phpstan.sh {} ::: $(seq -s' ' 1 ${PROC_COUNT})
 # Run the analyzers.
