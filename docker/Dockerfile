@@ -35,9 +35,6 @@ RUN mkdir --parents /var/lib/drupalci/workspace/phpstan-results \
     && /var/lib/drupalci/drupal-checkout/vendor/bin/drush -r /var/lib/drupalci/drupal-checkout si --db-url=sqlite://sites/default/files/.ht.sqlite -y \
     && /var/lib/drupalci/drupal-checkout/vendor/bin/drush -r /var/lib/drupalci/drupal-checkout en upgrade_status -y \
     && git -C /var/lib/drupalci/drupal-checkout add sites/default/files/.ht.sqlite \
-    && git -C /var/lib/drupalci/drupal-checkout add . \
-    && git -C /var/lib/drupalci/drupal-checkout commit -q -m "adds phpstan and drupal-rector and sqlite" \
-    && cp /var/lib/drupalci/drupal-checkout/composer.lock /var/lib/drupalci/workspace/phpstan-results/drupal-composer.lock.json \
     && find /var/lib/drupalci/drupal-checkout/vendor -name .git -exec rm -rf {} \; \
     || true
 
@@ -45,3 +42,6 @@ COPY ./files/phpstan.neon /var/lib/drupalci/drupal-checkout/phpstan.neon
 COPY ./files/rector.yml /var/lib/drupalci/drupal-checkout/rector.yml
 COPY ./files/rector-no-tests.yml /var/lib/drupalci/drupal-checkout/rector-no-tests.yml
 
+RUN git -C /var/lib/drupalci/drupal-checkout add . \
+    && git -C /var/lib/drupalci/drupal-checkout commit -q -m "adds phpstan and drupal-rector and sqlite" \
+    && cp /var/lib/drupalci/drupal-checkout/composer.lock /var/lib/drupalci/workspace/phpstan-results/drupal-composer.lock.json
