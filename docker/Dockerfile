@@ -21,6 +21,7 @@ RUN mkdir --parents /var/lib/drupalci/workspace/phpstan-results \
     && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
     && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { unlink('/tmp/composer-setup.php'); echo 'Invalid installer' . PHP_EOL; exit(1); }" \
     && php /tmp/composer-setup.php --filename composer --install-dir /usr/local/bin \
+    && git clone https://git.drupalcode.org/project/infrastructure.git /var/lib/drupalci/workspace/infrastructuree \
     && git clone -b 8.9.x https://git.drupalcode.org/project/drupal.git /var/lib/drupalci/drupal-checkout \
     && sudo dpkg -i /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/parallel_20190622_all.deb \
     && git config --global user.email "git@drupal.org" \
