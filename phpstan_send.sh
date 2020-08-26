@@ -33,4 +33,4 @@ do
 
 mv ${i} ${i}.tsv
 done
-curl https://dispatcher.drupalci.org/job/project_analysis//build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}"
+curl https://dispatcher.drupalci.org/job/project_analysis//build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F token="${TOKEN}"
