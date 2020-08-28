@@ -26,7 +26,7 @@ GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv
 
 
-split -n16 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
+split -n l/16 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
 
 for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects??`;
 do
