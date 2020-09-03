@@ -23,9 +23,9 @@ FROM project_release_supported_versions prsv
     LEFT JOIN (SELECT pcc.release_nid, GROUP_CONCAT(CONCAT(pcc.name, ':\"', pcc.core_version_requirement, '\"')) as \`cvr\` FROM project_composer_component pcc GROUP BY pcc.release_nid) AS coreversions ON coreversions.release_nid = vrl.release_nid
 WHERE prsv.supported = 1
 GROUP BY prsv.nid, prsv.branch
-ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv
+ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/allprojects.tsv
 
-
+egrep -v 'geotimezone|ip2country|background_process' /var/www/drupal.org/htdocs/files/project_analysis/allprojects.tsv > /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv
 split -n l/16 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
 
 for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects??`;
