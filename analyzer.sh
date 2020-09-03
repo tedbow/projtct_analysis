@@ -28,7 +28,7 @@ if [[ -d "/var/lib/drupalci/workspace/drupal-checkouts/drupal$5/${4#project_}s/c
   rector_needed_result=$?
   info_updatable_result=1
   # set this back to 0 when we figure what we need to do with rector
-  if [ $rector_needed_result -eq 9000 ]; then
+  if [ $rector_needed_result -eq 0 ]; then
     # Rename phpstan.neon because it is not needed for rector and causes some modules to fail.
     mv phpstan.neon phpstan.neon.hide
     # Create a git commit for the current state of the project
