@@ -41,6 +41,7 @@ RUN mkdir --parents /var/lib/drupalci/workspace/phpstan-results \
 COPY ./files/phpstan.neon /var/lib/drupalci/drupal-checkout/phpstan.neon
 COPY ./files/rector.yml /var/lib/drupalci/drupal-checkout/rector.yml
 COPY ./files/rector-no-tests.yml /var/lib/drupalci/drupal-checkout/rector-no-tests.yml
+COPY ./files/memory.ini /usr/local/etc/php/conf.d/memory.ini
 
 RUN git -C /var/lib/drupalci/drupal-checkout add . \
     && git -C /var/lib/drupalci/drupal-checkout commit -q -m "adds phpstan and drupal-rector and sqlite" \
