@@ -9,8 +9,6 @@ function gitCommit() {
 create_patch=0
 
 cd /var/lib/drupalci/workspace/drupal-checkouts/drupal$5
-#COMPOSER_CACHE_DIR=/tmp/cache$5 composer config repositories.patch vcs https://github.com/greg-1-anderson/core-relaxed
-#COMPOSER_CACHE_DIR=/tmp/cache$5 composer --no-interaction --no-progress require drupal/core-relaxed 8.8.x 2> /var/lib/drupalci/workspace/phpstan-results/$1.$3.phpstan_stderr
 COMPOSER_MEMORY_LIMIT=-1 COMPOSER_CACHE_DIR=/var/lib/drupalci/workspace/drupal-checkouts/cache$5 composer --no-interaction --no-progress require drupal/$2 $3 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.phpstan_stderr
 
 # Ensure the directory was created where we thought it should be.
