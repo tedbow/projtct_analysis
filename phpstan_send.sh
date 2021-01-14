@@ -20,13 +20,16 @@ FROM project_release_supported_versions prsv
     INNER JOIN project_composer_namespace_map pcnm ON pcnm.project_nid = fdfpmn.entity_id AND pcnm.component_name = fdfpmn.field_project_machine_name_value AND pcnm.category = 'current'
     INNER JOIN versioncontrol_labels vl ON vl.label_id = vrl.label_id AND vl.name NOT LIKE '9.x-%'
     INNER JOIN field_data_taxonomy_vocabulary_44 fdtv44 on prsv.nid = fdtv44.entity_id AND fdtv44.taxonomy_vocabulary_44_tid != 13032
+    INNER JOIN field_data_taxonomy_vocabulary_46 fdtv46 on prsv.nid = fdtv46.entity_id AND fdtv46.taxonomy_vocabulary_46_tid != 9994
+    INNER JOIN field_data_field_security_advisory_coverage fdf_sac ON fdf_sac.entity_id = prsv.nid AND fdf_sac.field_security_advisory_coverage_value = 'revoked'
     LEFT JOIN (SELECT pcc.release_nid, GROUP_CONCAT(CONCAT(pcc.name, ':\"', pcc.core_version_requirement, '\"')) as \`cvr\` FROM project_composer_component pcc GROUP BY pcc.release_nid) AS coreversions ON coreversions.release_nid = vrl.release_nid
 WHERE prsv.supported = 1
 GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/allprojects.tsv
-
+rm /var/www/drupal.org/htdocs/files/project_analysis/projects??
 egrep -v 'geotimezone|ip2country|background_process|publisso_gold' /var/www/drupal.org/htdocs/files/project_analysis/allprojects.tsv > /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv
-split -n l/4 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
+
+split -n l/2 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
 
 for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects??`;
 do
