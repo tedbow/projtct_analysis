@@ -26,7 +26,6 @@ FROM project_release_supported_versions prsv
 WHERE prsv.supported = 1
 GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/allprojects.tsv
-rm /var/www/drupal.org/htdocs/files/project_analysis/projects??
 egrep -v 'geotimezone|ip2country|background_process|publisso_gold' /var/www/drupal.org/htdocs/files/project_analysis/allprojects.tsv > /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv
 
 split -n l/2 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
