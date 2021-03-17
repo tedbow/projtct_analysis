@@ -1,6 +1,6 @@
-FROM php:7.2.33-apache-buster
+FROM php:7.2.34-apache-buster
 
-ADD https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions /usr/local/bin/
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
      install-php-extensions gd zip
