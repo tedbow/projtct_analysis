@@ -27,7 +27,7 @@ RUN mkdir --parents /var/lib/drupalci/workspace/phpstan-results \
     && git config --global user.email "git@drupal.org" \
     && git config --global user.name "Drupalci Testbot" \
     && composer --quiet --working-dir=/var/lib/drupalci/drupal-checkout require palantirnet/drupal-rector:0.5.6 --dev \
-    && composer --quiet --working-dir=/var/lib/drupalci/drupal-checkout require drupal/upgrade_status:2.8 \
+    && composer --quiet --working-dir=/var/lib/drupalci/drupal-checkout require drupal/upgrade_status:~3.5 \
     && composer config --working-dir=/var/lib/drupalci/drupal-checkout repositories.local '{"type": "path", "url": "/var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_analysis_utils", "options": { "symlink": false}}' \
     && composer --quiet --working-dir=/var/lib/drupalci/drupal-checkout require drupalorg_infrastructure/project_analysis_utils --no-progress \
     && composer --quiet --working-dir=/var/lib/drupalci/drupal-checkout require drush/drush:9.7.2 --no-progress \
