@@ -23,16 +23,19 @@ FROM project_release_supported_versions prsv
     INNER JOIN field_data_taxonomy_vocabulary_46 fdtv46 on prsv.nid = fdtv46.entity_id AND fdtv46.taxonomy_vocabulary_46_tid != 9994
     INNER JOIN field_data_field_security_advisory_coverage fdf_sac ON fdf_sac.entity_id = prsv.nid AND fdf_sac.field_security_advisory_coverage_value != 'revoked'
     LEFT JOIN (SELECT pcc.release_nid, GROUP_CONCAT(CONCAT(pcc.name, ':\"', pcc.core_version_requirement, '\"')) as \`cvr\` FROM project_composer_component pcc GROUP BY pcc.release_nid) AS coreversions ON coreversions.release_nid = vrl.release_nid
+    LEFT JOIN project_composer_component pcc2 ON pcc2.release_nid = vrl.release_nid AND pcc2.component_role = 'primary'
+
 WHERE prsv.supported = 1
+AND core_version_requirement REGEXP '[~^]9'
 GROUP BY prsv.nid, prsv.branch
-ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/allprojects.tsv
-egrep -v 'geotimezone|ip2country|background_process|publisso_gold' /var/www/drupal.org/htdocs/files/project_analysis/allprojects.tsv > /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv
+ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/allprojects_d10.tsv
+egrep -v 'geotimezone|ip2country|background_process|publisso_gold' /var/www/drupal.org/htdocs/files/project_analysis/allprojects.tsv > /var/www/drupal.org/htdocs/files/project_analysis/projects_d10.tsv
 
-split -n l/2 -d /var/www/drupal.org/htdocs/files/project_analysis/projects.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
+split -n l/2 -d /var/www/drupal.org/htdocs/files/project_analysis/projects_d10.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
 
-for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects??`;
+for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects_d10??`;
 do
 
 mv ${i} ${i}.tsv
 done
-curl https://dispatcher.drupalci.org/job/project_analysis/build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F token="${TOKEN}"
+curl https://dispatcher.drupalci.org/job/project_analysis_d10/build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F token="${TOKEN}"
