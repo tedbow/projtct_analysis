@@ -1,6 +1,7 @@
 FROM php:7.2.34-apache-buster
 
 ARG DRUPAL_CORE_VERSION="8.9.x"
+ARG DRUSH_VERSION="9.7.2"
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
@@ -31,7 +32,7 @@ RUN mkdir --parents /var/lib/drupalci/workspace/phpstan-results \
     && composer --quiet --working-dir=/var/lib/drupalci/drupal-checkout require drupal/upgrade_status:~3.5 \
     && composer config --working-dir=/var/lib/drupalci/drupal-checkout repositories.local '{"type": "path", "url": "/var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_analysis_utils", "options": { "symlink": false}}' \
     && composer --quiet --working-dir=/var/lib/drupalci/drupal-checkout require drupalorg_infrastructure/project_analysis_utils --no-progress \
-    && composer --quiet --working-dir=/var/lib/drupalci/drupal-checkout require drush/drush:9.7.2 --no-progress \
+    && composer --quiet --working-dir=/var/lib/drupalci/drupal-checkout require drush/drush:${DRUSH_VERSION} --no-progress \
     && sudo chmod 777 /var/lib/drupalci/drupal-checkout/sites/default \
     && /var/lib/drupalci/drupal-checkout/vendor/bin/drush -r /var/lib/drupalci/drupal-checkout si --db-url=sqlite://sites/default/files/.ht.sqlite -y \
     && /var/lib/drupalci/drupal-checkout/vendor/bin/drush -r /var/lib/drupalci/drupal-checkout en upgrade_status -y \
