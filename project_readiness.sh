@@ -2,7 +2,7 @@
 set -eux
 
 export PHPSTAN_RESULT_DIR="/var/lib/drupalci/workspace/phpstan-results"
-$DRUPAL_BRANCH=$1
+DRUPAL_BRANCH=$1
 #This file is intended to be executed on the testbot docker container.
 
 PROC_COUNT=`grep processor /proc/cpuinfo |wc -l`
