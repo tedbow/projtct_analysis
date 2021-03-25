@@ -31,7 +31,7 @@ GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/allprojects_d10.tsv
 egrep -v 'geotimezone|ip2country|background_process|publisso_gold' /var/www/drupal.org/htdocs/files/project_analysis/allprojects_d10.tsv > /var/www/drupal.org/htdocs/files/project_analysis/projects_d10.tsv
 
-split -n l/2 -d /var/www/drupal.org/htdocs/files/project_analysis/projects_d10.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects
+split -n l/2 -d /var/www/drupal.org/htdocs/files/project_analysis/projects_d10.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects_d10
 
 for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects_d10??`;
 do
