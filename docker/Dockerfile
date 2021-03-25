@@ -1,4 +1,4 @@
-FROM php:7.2.34-apache-buster
+FROM php:7.3.27-apache-buster
 
 ARG DRUPAL_CORE_VERSION="8.9.x"
 ARG DRUSH_VERSION="9.7.2"
