@@ -4,6 +4,8 @@ set -eux
 export PHPSTAN_RESULT_DIR="/var/lib/drupalci/workspace/phpstan-results"
 #This file is intended to be executed on the testbot docker container.
 
+composer --working-dir=/var/lib/drupalci/drupal-checkout remove drupalorg_infrastructure/project_analysis_utils
+composer --working-dir=/var/lib/drupalci/drupal-checkout require drupalorg_infrastructure/project_analysis_utils
 PROC_COUNT=`grep processor /proc/cpuinfo |wc -l`
 
 parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/install_phpstan.sh {} ::: $(seq -s' ' 1 ${PROC_COUNT})
