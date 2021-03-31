@@ -22,7 +22,7 @@ FROM project_release_supported_versions prsv
     INNER JOIN field_data_taxonomy_vocabulary_44 fdtv44 on prsv.nid = fdtv44.entity_id AND fdtv44.taxonomy_vocabulary_44_tid != 13032
     INNER JOIN field_data_taxonomy_vocabulary_46 fdtv46 on prsv.nid = fdtv46.entity_id AND fdtv46.taxonomy_vocabulary_46_tid != 9994
     INNER JOIN field_data_field_security_advisory_coverage fdf_sac ON fdf_sac.entity_id = prsv.nid AND fdf_sac.field_security_advisory_coverage_value != 'revoked'
-    LEFT JOIN (SELECT pcc.release_nid, GROUP_CONCAT(CONCAT(pcc.name, ':\"', pcc.component_role, ':\"', pcc.core_version_requirement, '\"')) as \`cvr\` FROM project_composer_component pcc GROUP BY pcc.release_nid) AS coreversions ON coreversions.release_nid = vrl.release_nid
+    LEFT JOIN (SELECT pcc.release_nid, GROUP_CONCAT(CONCAT(pcc.name, ':', pcc.component_role, ':\"', pcc.core_version_requirement, '\"')) as \`cvr\` FROM project_composer_component pcc GROUP BY pcc.release_nid) AS coreversions ON coreversions.release_nid = vrl.release_nid
     LEFT JOIN project_composer_component pcc2 ON pcc2.release_nid = vrl.release_nid AND pcc2.component_role = 'primary'
 
 WHERE prsv.supported = 1
