@@ -24,7 +24,5 @@ require_once $autoLoad;
 if (!isset($argv[1])) {
   throw new Exception("Provide module list");
 }
-if (!isset($argv[2])) {
-  throw new Exception("Provide project name");
-}
-print MachineNameFinder::findMachineName($argv[1], $argv[2]);
+
+print MachineNameFinder::findMachineName($argv[1]);
