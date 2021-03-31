@@ -15,21 +15,21 @@ class MachineNameFinder {
    *
    * @param string $modules_csv
    *   As created in project.tsv
-   * @param $project_name
-   *   The project name that is used for composer.
    *
    * @return string
    */
-  public static function findMachineName(string $modules_csv, $project_name) {
+  public static function findMachineName(string $modules_csv) {
     $module_infos  = explode(',', $modules_csv);
     $shortest_len = 9999;
     $shortest_module_name = NULL;
     foreach ($module_infos as $module_info) {
 
-      [$module_name, $info] = explode(':', $module_info);
-      if ($module_name === $project_name) {
+      [$module_name, $core_version_requirement, $module_role] = explode(':', $module_info);
+      if ($module_role === 'primary') {
         return $module_name;
       }
+      // There should always be a module flagged as primary, but we'll leave this
+      // logic in here just in case something is awry in the db for some reason.
       $len = strlen($module_name);
       if ($len < $shortest_len) {
         $shortest_len = $len;
