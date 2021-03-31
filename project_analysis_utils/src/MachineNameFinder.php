@@ -24,7 +24,7 @@ class MachineNameFinder {
     $shortest_module_name = NULL;
     foreach ($module_infos as $module_info) {
 
-      [$module_name, $core_version_requirement, $module_role] = explode(':', $module_info);
+      [$module_name, $module_role, $core_version_requirement] = explode(':', $module_info);
       if ($module_role === 'primary') {
         return $module_name;
       }
