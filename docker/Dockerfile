@@ -1,7 +1,7 @@
-FROM php:7.3.27-apache-buster
+FROM php:8.0.2-apache-buster
 
-ARG DRUPAL_CORE_VERSION="8.9.x"
-ARG DRUSH_VERSION="9.7.2"
+ARG DRUPAL_CORE_VERSION="9.4.x"
+ARG DRUSH_VERSION="11.0.3"
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync && \
