@@ -7,7 +7,7 @@ use Symfony\Component\Yaml\Yaml;
 use \Exception as InfoParserException;
 
 /**
- * This a near copy of Drupal core's parser at 8.9.x:7a75718dcf.
+ * This a near copy of Drupal core's parser at 9.4.x:372bdb87.
  *
  * It is used in tests to prove the generated info.yml are valid.
  */
@@ -39,12 +39,22 @@ class InfoParserDynamic {
       if (!empty($missing_keys)) {
         throw new InfoParserException('Missing required keys (' . implode(', ', $missing_keys) . ') in ' . $filename);
       }
-      if (!isset($parsed_info['core']) && !isset($parsed_info['core_version_requirement'])) {
+      if (!isset($parsed_info['core_version_requirement'])) {
+        if (strpos($filename, 'core/') === 0 || strpos($filename, $this->root . '/core/') === 0) {
+          // Core extensions do not need to specify core compatibility: they are
+          // by definition compatible so a sensible default is used. Core
+          // modules are allowed to provide these for testing purposes.
+          $parsed_info['core_version_requirement'] = \Drupal::VERSION;
+        }
+        elseif (isset($parsed_info['package']) && $parsed_info['package'] === 'Testing') {
+          // Modules in the testing package are exempt as well. This makes it
+          // easier for contrib to use test modules.
+          $parsed_info['core_version_requirement'] = \Drupal::VERSION;
+        }
+        elseif (!isset($parsed_info['core'])) {
           // Non-core extensions must specify core compatibility.
-          throw new InfoParserException("The 'core' or the 'core_version_requirement' key must be present in " . $filename);
+          throw new InfoParserException("The 'core_version_requirement' key must be present in " . $filename);
       }
-      if (isset($parsed_info['core']) && !preg_match("/^\d\.x$/", $parsed_info['core'])) {
-        throw new InfoParserException("Invalid 'core' value \"{$parsed_info['core']}\" in " . $filename);
       }
       if (isset($parsed_info['core_version_requirement'])) {
         try {
@@ -68,6 +78,9 @@ class InfoParserDynamic {
         if ($supports_pre_core_version_requirement_version && !Semver::satisfies('8.0.0-alpha1', $parsed_info['core_version_requirement'])) {
           throw new InfoParserException("The 'core_version_requirement' can not be used to specify compatibility for a specific version before " . static::FIRST_CORE_VERSION_REQUIREMENT_SUPPORTED_VERSION . " in $filename");
         }
+      }
+      if (isset($parsed_info['core']) && $parsed_info['core'] !== '8.x') {
+        throw new InfoParserException("'core: {$parsed_info['core']}' is not supported. Use 'core_version_requirement' to specify core compatibility. Only 'core: 8.x' is supported to provide backwards compatibility for Drupal 8 when needed in $filename");
       }
 
       // Determine if the extension is compatible with the current version of
