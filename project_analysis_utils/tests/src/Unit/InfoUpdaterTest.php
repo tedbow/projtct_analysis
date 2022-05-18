@@ -20,9 +20,7 @@ class InfoUpdaterTest extends TestBase {
   public function testUpdateInfoNew($file, $project_version, $expected, $expected_remove_core) {
     $temp_file = $this->createTempFixtureFile($file);
     $pre_yml = Yaml::parseFile($temp_file);
-    if ($file === 'core_version_requirement_empty.info.yml') {
-      $this->assertFalse(isset($pre_yml['core_version_requirement']));
-    }
+
     InfoUpdater::updateInfo($temp_file, $project_version);
     $post_yml = Yaml::parseFile($temp_file);
     $this->assertSame($expected, $post_yml['core_version_requirement']);
@@ -53,32 +51,32 @@ class InfoUpdaterTest extends TestBase {
     return [
       // Test environment_indicator.3.x-dev no deprecations removed for 8.8
       // or 8.7.
-      '^8' => [
+      '^9' => [
         'core_version_requirement_empty.info.yml',
         'environment_indicator.3.x-dev',
-        '^8 || ^9',
+        '^9 || ^10',
         FALSE,
       ],
-      '^8 existing' => [
+      '^10 existing' => [
         'core_version_requirement.info.yml',
         'environment_indicator.3.x-dev',
-        '^8 || ^9',
+        '^9 || ^10',
         FALSE,
       ],
-      '^8 existing 8.7' => [
-        'core_version_requirement_879.info.yml',
+      '^9 existing 9.4' => [
+        'core_version_requirement_940.info.yml',
         'environment_indicator.3.x-dev',
-        '^8.7.9 || ^9',
+        '^9.4.0 || ^10',
         FALSE,
       ],
-      '^8 existing 8.8.3' => [
-        'core_version_requirement_883.info.yml',
+      '^9 existing 9.5.0' => [
+        'core_version_requirement_950.info.yml',
         'environment_indicator.3.x-dev',
-        '^8.8.3 || ^9',
+        '^9.5.0 || ^10',
         FALSE,
       ],
       // Remove texbar.1.x-dev 8.7 not 8.8
-      '8.7.7' => [
+      '9.4.0' => [
         'core_version_requirement_empty.info.yml',
         'texbar.1.x-dev',
         '^8.7.7 || ^9',
