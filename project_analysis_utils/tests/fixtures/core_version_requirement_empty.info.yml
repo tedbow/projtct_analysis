@@ -1,3 +1,3 @@
 name: test file
-core: 8.x
 type: module
+core_version_requirement: ^9
