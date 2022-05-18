@@ -20,7 +20,7 @@ class InfoUpdater extends ResultProcessorBase {
   public static function updateInfo($file, string $project_version) {
     $minimum_core_minor = NULL;
     if (file_exists(self::getUpgradeStatusXML($project_version, 'post'))) {
-      $minimum_core_minor = static::getMinimumCore8Minor($project_version);
+      $minimum_core_minor = static::getMinimumCore9Minor($project_version);
     }
 
     $contents = file_get_contents($file);
@@ -28,39 +28,39 @@ class InfoUpdater extends ResultProcessorBase {
     $has_core_version_requirement = FALSE;
     $new_core_version_requirement = NULL;
     if (!isset($info[static::KEY])) {
-      if ($minimum_core_minor === 8) {
-        $new_core_version_requirement = '^8.8 || ^9';
+      if ($minimum_core_minor === 5) {
+        $new_core_version_requirement = '^9.5 || ^10';
         unset($info['core']);
       }
-      elseif ($minimum_core_minor === 7) {
-        $new_core_version_requirement = '^8.7.7 || ^9';
+      elseif ($minimum_core_minor === 4) {
+        $new_core_version_requirement = '^9.4 || ^10';
         unset($info['core']);
       }
       else {
-        $new_core_version_requirement = '^8 || ^9';
+        $new_core_version_requirement = '^9 || ^10';
       }
     }
     else {
       $has_core_version_requirement = TRUE;
-      $constraint_8 = NULL;
-      if ($minimum_core_minor === 8) {
-        if (strpos($info[static::KEY], '8.8') === FALSE) {
-          // If 8.8 is not in core_version_requirement it is likely specifying
+
+      if ($minimum_core_minor === 5) {
+        if (strpos($info[static::KEY], '9.5') === FALSE) {
+          // If 9.5 is not in core_version_requirement it is likely specifying
           // lower compatibility
-          $new_core_version_requirement = '^8.8 || ^9';
+          $new_core_version_requirement = '^9.5 || ^10';
           unset($info['core']);
         }
       }
-      elseif ($minimum_core_minor === 7) {
-        if (strpos($info[static::KEY], '8.8') === FALSE && strpos($info[static::KEY], '8.7') === FALSE) {
-          // If no version 8.8 or 8.7 then we need to set a version
-          $new_core_version_requirement = '^8.7.7 || ^9';
+      elseif ($minimum_core_minor === 4) {
+        if (strpos($info[static::KEY], '9.5') === FALSE && strpos($info[static::KEY], '9.4') === FALSE) {
+          // If no version 9.5 or 9.4 then we need to set a version
+          $new_core_version_requirement = '^9.4 || ^10';
           unset($info['core']);
         }
       }
-      // Only update if we it doesn't already satisfy 9.0.0
-      if (empty($new_core_version_requirement) && !Semver::satisfies('9.0.0', $info[static::KEY])) {
-        $new_core_version_requirement = $info[static::KEY] . ' || ^9';
+      // Only update if we it doesn't already satisfy 10.0.0
+      if (empty($new_core_version_requirement) && !Semver::satisfies('10.0.0', $info[static::KEY])) {
+        $new_core_version_requirement = $info[static::KEY] . ' || ^10';
       }
     }
     if (!empty($new_core_version_requirement)) {
@@ -110,23 +110,21 @@ class InfoUpdater extends ResultProcessorBase {
   /**
    * Gets the minimum core minor for project version.
    *
-   * Only checks 8.8 and 8.7 otherwise returns 0. Currently updater will only
-   * support these updates. To denote compatibility with 8.5 etc would have to
-   * use dependencies and since this minors are not supported it is not worth
-   * for the possible bugs introduced.
+   * Only checks 9.4 and 9.5 otherwise returns 0. Currently updater will only
+   * support these updates.
    *
    * @param string $project_version
    *
    * @return int
-   *   The minor version either 8,7,or 0.
+   *   The minor version either 5,4,or 0.
    * @throws \Exception
    */
-  private static function getMinimumCore8Minor(string $project_version) {
+  private static function getMinimumCore9Minor(string $project_version) {
     $pre_messages = self::getMessages($project_version, 'pre');
     $post_messages = self::getMessages($project_version, 'post');
 
-    foreach ([8, 7] as $minor) {
-      $deprecation_version = "drupal:8.$minor.0";
+    foreach ([5, 4] as $minor) {
+      $deprecation_version = "drupal:9.$minor.0";
       if (strpos($pre_messages, $deprecation_version) !== FALSE && strpos($post_messages, $deprecation_version) === FALSE) {
         return $minor;
       }
