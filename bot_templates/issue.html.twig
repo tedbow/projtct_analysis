@@ -1,54 +1,53 @@
 <h3 id="summary-problem-motivation">Problem/Motivation</h3>
+
 Hello project maintainers,
-This is an automated issue to help make this module compatible with Drupal 9.
+
+This is an automated issue to help make this module compatible with Drupal 10.
 
 To read more about this effort by the Drupal Association, please read: <a href="https://www.drupal.org/blog/accelerating-drupal-9-module-and-theme-readiness-with-automated-patches" >Accelerating Drupal 9 module and theme readiness with automated patches</a>
 
-Periodically patches will be added to this issue that remove Drupal 9 deprecations. To stop further patches from being posted simply close this issue(any status <strong>besides</strong> Active, Needs Review or Needs work) or remove the "{{ auto_tag }}" tag from the issue.
+Periodically patches will be added to this issue that remove Drupal 10 deprecated API uses. To stop further patches from being posted simply close this issue (any status <strong>besides</strong> Active, Needs review or Needs work) or remove the "{{ auto_tag }}" tag from the issue.
 
 The patches will be posted by the <a href="/u/project-update-bot">Project Update Bot</a> official user account. This account will not receive any issue credit contributions for itself or any company.
 
-
-
-
-
 <h3 id="summary-proposed-resolution">Proposed resolution</h3>
-You have a few options for how to use this issue:
-<ol>
 
+You have a few options for how to use this issue:
+
+<ol>
 <li><strong>Accept automated patches until this issue is closed</strong>
 
-If this issue is left open(status of Active, Needs Review or Needs work) and the "{{ auto_tag }}" tag is left on this issue, new patches will be posted periodically if new deprecations are needed.
+If this issue is left open (status of Active, Needs review or Needs work) and the "{{ auto_tag }}" tag is left on this issue, new patches will be posted periodically if new deprecation fixes are needed.
 
-As the Drupal Rector project improves and is able to fix more deprecations the patches posted here will cover more of the deprecations in the module.
+As the Drupal Rector project improves and is able to fix more deprecated API uses, the patches posted here will cover more of the deprecated API uses in the module.
 </li>
+
 <li><strong>Leave open but stop new automated patches.</strong>
 
-If you want to use this issue as a starting point to remove deprecations but don't want new automated patches simply leave this issue open but remove the "{{ auto_tag }}" from the issue.
+If you want to use this issue as a starting point to remove deprecated API uses but don't want new automated patches simply leave this issue open but remove the "{{ auto_tag }}" tag from the issue.
 
 You can use <a href="https://github.com/palantirnet/drupal-rector">Drupal Rector</a> yourself to make these patches.
 
-If you want to receive automated patches again simply add back the "{{ auto_tag }}" tag.
+If you want to receive automated patches again, add back the "{{ auto_tag }}" tag.
 </li>
+
 <li><strong>Close it and don't use it</strong>
 
-If the maintainers of this project don't find this issue useful they can simply close this issue(any status <strong>besides</strong> Active, Needs Review or Needs work) and no more automated patches will be posted here.
+If the maintainers of this project don't find this issue useful, they can close this issue (any status <strong>besides</strong> Active, Needs review or Needs work) and no more automated patches will be posted here.
 
-If the issue is reopened then new automated patches will be posted.
+If the issue is reopened, then new automated patches will be posted.
 
-If you are using another issue(s) to work on Drupal 9 compatibility it may be useful to other contributors to add those issues as "Related issues" when closing this issue.</li>
+If you are using another issue(s) to work on Drupal 10 compatibility it may be useful to other contributors to add those issues as "Related issues" when closing this issue.</li>
 </ol>
-
 
 <h3 id="summary-remaining-tasks">Remaining tasks</h3>
+
 Using the patches
 <ol>
-    <li>Apply the patch in the comment by <a href="/u/project-update-bot">Project Update Bot</a></li>
-    <li>Thoroughly test the patch. These patches are automatically generated so they haven't been tested manually or automatically.</li>
+<li>Apply the patch in the comment by <a href="/u/project-update-bot">Project Update Bot</a>.</li>
+<li>Thoroughly test the patch. These patches are automatically generated so they haven't been tested manually or automatically.</li>
 </ol>
+
 <h4>Providing feedback</h4>
-If there are problems with one of the patches posted by the <a href="https://www.drupal.org/u/project-update-bot" rel="nofollow">Project Update Bot</a>, such as it does not correctly replace a deprecation, you can file an issue in the <a href="https://www.drupal.org/project/issues/rector?categories=All" rel="nofollow">Rector issue queue</a>. For other issues with the bot, for instance if the issue summary created by the bot is unclear,&nbsp; use the <a href="https://www.drupal.org/project/issues/infrastructure?component=Bot%3A+Drupal+Rector" rel="nofollow">Infrastructure project issue queue</a> using the component “Bot: Drupal Rector”.
 
-
-
-
+If there are problems with one of the patches posted by the <a href="https://www.drupal.org/u/project-update-bot" rel="nofollow">Project Update Bot</a>, such as it does not correctly replace a deprecation, you can file an issue in the <a href="https://www.drupal.org/project/issues/rector?categories=All" rel="nofollow">Drupal Rector issue queue</a>. For other issues with the bot, for instance if the issue summary created by the bot is unclear, use the <a href="https://www.drupal.org/project/issues/infrastructure?component=Bot%3A+Drupal+Rector" rel="nofollow">Infrastructure project issue queue</a> using the component “Bot: Drupal Rector”.
