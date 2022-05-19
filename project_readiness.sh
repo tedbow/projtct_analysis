@@ -11,7 +11,7 @@ git -C /var/lib/drupalci/drupal-checkout commit -q -m "Update project analysis i
 
 # Set up as many workspaces for running phpstan as many processor cores we have.
 PROC_COUNT=`grep processor /proc/cpuinfo |wc -l`
-parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/install_phpstan.sh {} ::: $(seq -s' ' 1 ${PROC_COUNT})
+parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/prepare_workspace.sh {} ::: $(seq -s' ' 1 ${PROC_COUNT})
 
 # Run the analyzers in parallel in each workspace we created.
 # 1/2/3/4/8 correspond to the columns in the project listing file which should take the
