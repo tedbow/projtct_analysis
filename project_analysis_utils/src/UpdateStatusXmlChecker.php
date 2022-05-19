@@ -9,8 +9,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class UpdateStatusXmlChecker {
 
-  protected const DEPRECATIONS_FILE = '/var/lib/drupalci/workspace/infrastructure/stats/project_analysis/deprecation-index.yml';
-
   /**
    * @var string
    */
@@ -101,27 +99,6 @@ class UpdateStatusXmlChecker {
     $ext = array_pop($parts);
     // Assume all non-yml or twig files are php.
     return !in_array($ext, ['yml', 'twig']);
-  }
-
-  /**
-   * Attempts to get the rector covered messages
-   *
-   * Currently this will not work.
-   *
-   * @return array
-   */
-  private function getRectorCoveredMessages() {
-    static $phpstan_messages = [];
-    if (empty($phpstan_messages)) {
-      $deprecations_file = static::DEPRECATIONS_FILE;
-      $deps = Yaml::parseFile($deprecations_file);
-      foreach ($deps as $dep) {
-        if (!empty($dep['PHPStan'])) {
-          $phpstan_messages[] = $dep['PHPStan'];
-        }
-      }
-    }
-    return $phpstan_messages;
   }
 
   /**
