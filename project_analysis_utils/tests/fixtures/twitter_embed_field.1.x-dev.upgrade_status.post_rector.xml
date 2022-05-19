@@ -1,3 +1,0 @@
-<?xml version="1.0"?>
-<checkstyle><file name="modules/contrib/twitter_embed_field/twitter_embed_field.info.yml"><error line="0" message="Add &lt;code&gt;core_version_requirement: ^8 || ^9&lt;/code&gt; to twitter_embed_field.info.yml to designate that the module is compatible with Drupal 9. See https://drupal.org/node/3070687." severity="error"/></file></checkstyle>
-

@@ -63,6 +63,24 @@ class InfoUpdaterTest extends TestBase {
         '^9 || ^10',
         FALSE,
       ],
+      '^9 existing 9.1' => [
+        'core_version_requirement_910.info.yml',
+        'environment_indicator.3.x-dev',
+        '^9.1.0 || ^10',
+        FALSE,
+      ],
+      '^9 existing 9.2' => [
+        'core_version_requirement_920.info.yml',
+        'environment_indicator.3.x-dev',
+        '^9.2.0 || ^10',
+        FALSE,
+      ],
+      '^9 existing 9.3' => [
+        'core_version_requirement_930.info.yml',
+        'environment_indicator.3.x-dev',
+        '^9.3.0 || ^10',
+        FALSE,
+      ],
       '^9 existing 9.4' => [
         'core_version_requirement_940.info.yml',
         'environment_indicator.3.x-dev',
@@ -75,79 +93,46 @@ class InfoUpdaterTest extends TestBase {
         '^9.5.0 || ^10',
         FALSE,
       ],
-      // Remove texbar.1.x-dev 8.7 not 8.8
-      '9.4.0' => [
+      '9.1.0' => [
         'core_version_requirement_empty.info.yml',
         'texbar.1.x-dev',
-        '^8.7.7 || ^9',
-        TRUE,
+        '^9.1 || ^10',
+        FALSE,
       ],
-      '8.7.7 existing ^8' => [
+      '9.1.0 existing ^9' => [
         'core_version_requirement.info.yml',
         'texbar.1.x-dev',
-        '^8.7.7 || ^9',
-        TRUE,
+        '^9.1 || ^10',
+        FALSE,
       ],
-      '8.7.7 existing ^8.7.9' => [
-        'core_version_requirement_879.info.yml',
+      '9.1.0 existing ^9.1.0' => [
+        'core_version_requirement_910.info.yml',
         'texbar.1.x-dev',
-        '^8.7.9 || ^9',
+        '^9.1.0 || ^10',
         FALSE,
       ],
-      '8.7.7 existing ^8.8.3' => [
-        'core_version_requirement_883.info.yml',
+      '9.1.0 existing ^9.2.0' => [
+        'core_version_requirement_920.info.yml',
         'texbar.1.x-dev',
-        '^8.8.3 || ^9',
+        '^9.2.0 || ^10',
         FALSE,
       ],
-      // Test twitter_embed_field.1.x-dev removed 8.8 but not 8.7
-      '^8.8' => [
-        'core_version_requirement_empty.info.yml',
-        'twitter_embed_field.1.x-dev',
-        '^8.8 || ^9',
-        TRUE,
-      ],
-      '^8.8 existing ^8' => [
-        'core_version_requirement.info.yml',
-        'twitter_embed_field.1.x-dev',
-        '^8.8 || ^9',
-        TRUE,
-      ],
-      '^8.8 existing 8.7' => [
-        'core_version_requirement_879.info.yml',
-        'twitter_embed_field.1.x-dev',
-        '^8.8 || ^9',
+      '9.1.0 existing ^9.3.0' => [
+        'core_version_requirement_930.info.yml',
+        'texbar.1.x-dev',
+        '^9.3.0 || ^10',
         FALSE,
       ],
-      '^8.8 existing 8.8.3' => [
-        'core_version_requirement_883.info.yml',
-        'twitter_embed_field.1.x-dev',
-        '^8.8.3 || ^9',
+      '9.1.0 existing ^9.4.0' => [
+        'core_version_requirement_940.info.yml',
+        'texbar.1.x-dev',
+        '^9.4.0 || ^10',
         FALSE,
       ],
-      // Test twitter_embed_field.1.x-dev removed 8.8 and 8.7
-      '8.8 + 8.7' => [
-        'core_version_requirement_empty.info.yml',
-        'widget_engine.1.x-dev',
-        '^8.8 || ^9',
-        TRUE,
-      ],
-      '8.8 + 8.7 existing ^8' => [
-        'core_version_requirement.info.yml',
-        'widget_engine.1.x-dev',
-        '^8.8 || ^9',
-        TRUE,
-      ],
-      '8.8 + 8.7 existing ^8.7.9' => [
-        'core_version_requirement_879.info.yml',
-        'widget_engine.1.x-dev',
-        '^8.8 || ^9',
-        FALSE,
-      ],
-      '8.8 + 8.7 existing ^8.8.3' => [
-        'core_version_requirement_883.info.yml',
-        'widget_engine.1.x-dev',
-        '^8.8.3 || ^9',
+      '9.1.0 existing ^9.5.0' => [
+        'core_version_requirement_950.info.yml',
+        'texbar.1.x-dev',
+        '^9.5.0 || ^10',
         FALSE,
       ],
     ];
