@@ -2,6 +2,7 @@
 set -uex
 TOKEN=$1
 
+# Find recent Drupal 9 compatible releases from projects and filter out some known ones that break the job.
 echo "SET group_concat_max_len = 1000000; SELECT fdfpmn.field_project_machine_name_value,
        pcnm.package_namespace,
        REGEXP_REPLACE(SUBSTRING_INDEX(vl.name,'8.x-',-1), '.x','.x-dev') as \`Composer\`,
@@ -31,6 +32,7 @@ GROUP BY prsv.nid, prsv.branch
 ORDER BY NULL" | drush -r /var/www/drupal.org/htdocs sql-cli --extra='--skip-column-names' | sort > /var/www/drupal.org/htdocs/files/project_analysis/allprojects_d10.tsv
 egrep -v 'geotimezone|ip2country|background_process|publisso_gold' /var/www/drupal.org/htdocs/files/project_analysis/allprojects_d10.tsv > /var/www/drupal.org/htdocs/files/project_analysis/projects_d10.tsv
 
+# Split the full list of projects to individual tsv files.
 split -n l/2 -d /var/www/drupal.org/htdocs/files/project_analysis/projects_d10.tsv /var/www/drupal.org/htdocs/files/project_analysis/projects_d10
 
 for i in `ls /var/www/drupal.org/htdocs/files/project_analysis/projects_d10??`;
@@ -38,4 +40,6 @@ do
 
 mv ${i} ${i}.tsv
 done
+
+# Run the Drupal 10 project analysis job.
 curl https://dispatcher.drupalci.org/job/project_analysis_d10/build --user "${DISPATCHER_USER}:${DISPATCHER_PASS}" -F token="${TOKEN}"

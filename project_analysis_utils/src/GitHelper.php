@@ -25,7 +25,7 @@ class GitHelper {
    *
    * Currently this method looks for files with where all the changes are of the
    * following types:
-   *   - Lines that only ocontain spaces, *, {, or }. Rector has a bug where it
+   *   - Lines that only contain spaces, *, {, or }. Rector has a bug where it
    *     changes some lines that aren't related to any rules.
    *     https://github.com/rectorphp/rector/issues/3375
    *   - Changes that are only fully qualified class name replacements. This

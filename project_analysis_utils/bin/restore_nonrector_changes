@@ -17,12 +17,12 @@ foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
   }
 }
 if (empty($autoLoad)) {
-  throw new Exception("No autoload patch");
+  throw new Exception("No autoload.php found on the attempted paths");
 }
 require_once $autoLoad;
 
 if (!isset($argv[1])) {
-  throw new Exception("Provide directory");
+  throw new Exception("Provide project directory");
 }
 
 $g = new GitHelper();

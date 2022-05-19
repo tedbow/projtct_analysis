@@ -43,22 +43,26 @@ class UpdateStatusXmlChecker {
   }
 
   /**
-   * Determines if rector should be run no the projects.
+   * Determines if rector should be run on the project.
    *
    * @return bool
    */
   public function runRector() {
     $messages = [];
     if (!isset($this->xml)) {
-      // If we couldn't get XML from upgrade_status still run rector.
-      // phpstan may have failed but rector still might suceed.
+      // If we couldn't get XML from upgrade_status, still run rector.
+      // phpstan may have failed, but rector still might succeed.
       return TRUE;
     }
     foreach ($this->xml->file as $file) {
       if ($this->isPhpfile($file)) {
+        // If there was at least one PHP file that had errors, it is worth
+        // running rector.
         return TRUE;
       }
     }
+
+    // If there was no error in PHP files, not worth to run rector.
     return FALSE;
   }
 
@@ -83,9 +87,11 @@ class UpdateStatusXmlChecker {
       $info = array_pop($parts);
       // Make sure this is an 'info.yml' file.
       if ($ext === 'yml' && $info === 'info') {
+        // Make sure we only have one error in this one file.
         if (count($file->error) === 1) {
           foreach ($file->error as $error) {
             $message = (string) $error->attributes()['message'];
+            // Make sure this one single error in this one file is about core version requirements.
             return preg_match('/core_version_requirement/', $message) === 1;
           }
         }

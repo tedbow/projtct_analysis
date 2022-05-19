@@ -8,18 +8,18 @@ namespace InfoUpdater;
 class MachineNameFinder {
 
   /**
-   * Gets the machine of a module.
+   * Gets the machine name of a project.
    *
    * The machine name of the project that is required by composer sometimes is
    * not the same as the machine name of the module.
    *
-   * @param string $modules_csv
-   *   As created in project.tsv
+   * @param string $composer_components
+   *   As appears in projects.tsv, eg. blazy_ui:subcomponent:"",blazy:primary:"^8 || ^9"
    *
    * @return string
    */
-  public static function findMachineName(string $modules_csv) {
-    $module_infos  = explode(',', $modules_csv);
+  public static function findMachineName(string $composer_components) {
+    $module_infos  = explode(',', $composer_components);
     $shortest_len = 9999;
     $shortest_module_name = NULL;
     foreach ($module_infos as $module_info) {

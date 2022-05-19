@@ -17,12 +17,12 @@ foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
   }
 }
 if (empty($autoLoad)) {
-  throw new Exception("No autoload patch");
+  throw new Exception("No autoload.php found on the attempted paths");
 }
 require_once $autoLoad;
 
 if (!isset($argv[1])) {
-  throw new Exception("Provide file");
+  throw new Exception("Provide XML result filename");
 }
 $checker = new UpdateStatusXmlChecker($argv[1]);
 $checker->isInfoUpdatable() ? exit(0) : exit(1);

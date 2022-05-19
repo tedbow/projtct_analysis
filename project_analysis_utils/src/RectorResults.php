@@ -8,7 +8,10 @@ namespace InfoUpdater;
 class RectorResults extends ResultProcessorBase {
 
   /**
-   * @param $project_version
+   * Check if there were errors running rector in test files.
+   *
+   * @param string $project_version
+   *   Project name and version as in the first part of the filename.
    *
    * @return bool
    */
