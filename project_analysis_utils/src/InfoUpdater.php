@@ -18,27 +18,20 @@ class InfoUpdater extends ResultProcessorBase {
    * @throws \Exception
    */
   public static function updateInfo($file, string $project_version) {
-    $minimum_core_minor = NULL;
+    $minimum_core_minor = 0;
     if (file_exists(self::getUpgradeStatusXML($project_version, 'post'))) {
       $minimum_core_minor = static::getMinimumCore9Minor($project_version);
     }
 
     $contents = file_get_contents($file);
     $info = Yaml::parse($contents);
+    unset($info['core']);
+
     $has_core_version_requirement = FALSE;
     $new_core_version_requirement = NULL;
     if (!isset($info[static::KEY])) {
-      if ($minimum_core_minor === 5) {
-        $new_core_version_requirement = '^9.5 || ^10';
-        unset($info['core']);
-      }
-      elseif ($minimum_core_minor === 4) {
-        $new_core_version_requirement = '^9.4 || ^10';
-        unset($info['core']);
-      }
-      else {
-        $new_core_version_requirement = '^9 || ^10';
-      }
+      // This should not happen, Drupal 9 compatible projects should have this key.
+      $new_core_version_requirement = '^9.' . $minimum_core_minor . ' || ^10';
     }
     else {
       $has_core_version_requirement = TRUE;
@@ -46,19 +39,36 @@ class InfoUpdater extends ResultProcessorBase {
       if ($minimum_core_minor === 5) {
         if (strpos($info[static::KEY], '9.5') === FALSE) {
           // If 9.5 is not in core_version_requirement it is likely specifying
-          // lower compatibility
+          // lower compatibility.
           $new_core_version_requirement = '^9.5 || ^10';
-          unset($info['core']);
         }
       }
       elseif ($minimum_core_minor === 4) {
         if (strpos($info[static::KEY], '9.5') === FALSE && strpos($info[static::KEY], '9.4') === FALSE) {
-          // If no version 9.5 or 9.4 then we need to set a version
+          // If no version 9.5 or 9.4 then we need to set a version.
           $new_core_version_requirement = '^9.4 || ^10';
-          unset($info['core']);
         }
       }
-      // Only update if we it doesn't already satisfy 10.0.0
+      elseif ($minimum_core_minor === 3) {
+        if (strpos($info[static::KEY], '9.5') === FALSE && strpos($info[static::KEY], '9.4') === FALSE && strpos($info[static::KEY], '9.3') === FALSE) {
+          // If no version 9.5, 9.4 or 9.3 then we need to set a version.
+          $new_core_version_requirement = '^9.3 || ^10';
+        }
+      }
+      elseif ($minimum_core_minor === 2) {
+        if (strpos($info[static::KEY], '9.5') === FALSE && strpos($info[static::KEY], '9.4') === FALSE && strpos($info[static::KEY], '9.3') === FALSE && strpos($info[static::KEY], '9.2') === FALSE) {
+          // If no version 9.5, 9.4, 9.3 or 9.2 then we need to set a version.
+          $new_core_version_requirement = '^9.2 || ^10';
+        }
+      }
+      elseif ($minimum_core_minor === 1) {
+        if (strpos($info[static::KEY], '9.5') === FALSE && strpos($info[static::KEY], '9.4') === FALSE && strpos($info[static::KEY], '9.3') === FALSE && strpos($info[static::KEY], '9.2') === FALSE && strpos($info[static::KEY], '9.1') === FALSE) {
+          // If no version 9.5, 9.4, 9.3, 9.2 or 9.1 then we need to set a version.
+          $new_core_version_requirement = '^9.1 || ^10';
+        }
+      }
+
+      // Only update if we it doesn't already satisfy 10.0.0, will only happen if $minimum_core_minor was 0.
       if (empty($new_core_version_requirement) && !Semver::satisfies('10.0.0', $info[static::KEY])) {
         $new_core_version_requirement = $info[static::KEY] . ' || ^10';
       }
@@ -68,27 +78,22 @@ class InfoUpdater extends ResultProcessorBase {
       $new_lines = [];
       $info[static::KEY] = $new_core_version_requirement;
       $added_line = FALSE;
-      foreach(preg_split("/((\r?\n)|(\r\n?))/", $contents) as $line){
+      foreach(preg_split("/((\r?\n)|(\r\n?))/", $contents) as $line) {
         $key = explode(':', $line)[0];
         $trimmed_key = trim($key);
-        if ($trimmed_key !== static::KEY && $trimmed_key !== 'core') {
-          $new_lines[] = $line;
+        if ($trimmed_key !== static::KEY) {
+          if ($trimmed_key !== 'core') {
+            // Keep any line that is not 'core' or 'core_version_requirement'.
+            $new_lines[] = $line;
+          }
         }
-        elseif ($has_core_version_requirement) {
+        else {
           // Update the existing line.
           $new_lines[] = static::KEY . ': ' . $info[static::KEY];
         }
-        if ($trimmed_key === 'core') {
-          if (isset($info['core'])) {
-            $new_lines[] = $line;
-          }
-          if (!$has_core_version_requirement) {
-            $added_line = TRUE;
-            $new_lines[] = static::KEY . ': ' . $info[static::KEY];
-          }
-        }
       }
-      if (!$added_line && !$has_core_version_requirement) {
+      // Add as a new line at the end of the file.
+      if (!$has_core_version_requirement) {
         $new_lines[] = static::KEY . ': ' . $info[static::KEY];
       }
       $new_file_contents = implode("\n", $new_lines);
@@ -97,8 +102,8 @@ class InfoUpdater extends ResultProcessorBase {
         return file_put_contents($file, $new_file_contents) !== FALSE;
       }
       catch (ParseException $exception) {
-        // IF the new file contents didn't parse then dump the info.
-        // This is will mean more lines will change.
+        // If the new file contents didn't parse then dump the info.
+        // This may result in a bigger diff.
         $yml = Yaml::dump($info);
         return file_put_contents($file, $yml) !== FALSE;
       }
@@ -108,22 +113,19 @@ class InfoUpdater extends ResultProcessorBase {
   }
 
   /**
-   * Gets the minimum core minor for project version.
-   *
-   * Only checks 9.4 and 9.5 otherwise returns 0. Currently updater will only
-   * support these updates.
+   * Gets the minimum core minor for project version based on detected API changes.
    *
    * @param string $project_version
    *
    * @return int
-   *   The minor version either 5,4,or 0.
+   *   The minor version either 5, 4, 3, 2, 1 or 0.
    * @throws \Exception
    */
   private static function getMinimumCore9Minor(string $project_version) {
     $pre_messages = self::getMessages($project_version, 'pre');
     $post_messages = self::getMessages($project_version, 'post');
 
-    foreach ([5, 4] as $minor) {
+    foreach ([5, 4, 3, 2, 1] as $minor) {
       $deprecation_version = "drupal:9.$minor.0";
       if (strpos($pre_messages, $deprecation_version) !== FALSE && strpos($post_messages, $deprecation_version) === FALSE) {
         return $minor;
