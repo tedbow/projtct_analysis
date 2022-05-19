@@ -1,3 +1,3 @@
 <?xml version="1.0"?>
-<checkstyle><file name="modules/contrib/texbar/texbar.info.yml"><error line="0" message="Add &lt;code&gt;core_version_requirement: ^9 || ^10&lt;/code&gt; to texbar.info.yml to designate that the module is compatible with Drupal 9. See https://drupal.org/node/3070687." severity="error"/></file></checkstyle>
+<checkstyle><file name="modules/contrib/texbar/texbar.info.yml"><error line="0" message="Add &lt;code&gt;core_version_requirement: ^9 || ^10&lt;/code&gt; to texbar.info.yml to designate that the module is compatible with Drupal 10. See https://drupal.org/node/3070687." severity="error"/></file></checkstyle>
 
