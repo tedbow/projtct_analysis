@@ -39,30 +39,26 @@ if [[ -d "/var/lib/drupalci/workspace/drupal-checkouts/drupal$5/${4#project_}s/c
 
   # set this back to 0 when we figure what we need to do with rector
   if [ $rector_needed_result -eq 0 ]; then
-    # Rename phpstan.neon because it is not needed for rector and causes some modules to fail.
-    mv phpstan.neon phpstan.neon.hide
     # Create a git commit for the current state of the project, so we can diff clearly later.
     gitCommit ${4#project_}s/contrib/$2
     create_patch=1
     # Run rector to see if we can fix anything automatically.
     php -d memory_limit=2G -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 -d upload_tmp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/rector process --verbose ${4#project_}s/contrib/$2 &>  /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector_out 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector_stderr
-    # Restore phpstan.neon
-    mv phpstan.neon.hide phpstan.neon
+
+    # Disabled for now given the PHP based rector config.
+    #cd ${4#project_}s/contrib/$2
+    #if [ -z "$(git status --porcelain)" ]; then
+    #  cd /var/lib/drupalci/workspace/drupal-checkouts/drupal$5
+    #  create_patch=0
+    #  php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 -d upload_tmp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/test_error $1.$3
+    #  test_error_result=$?
+    #  if [ $test_error_result -eq 0 ]; then
+    #    # Run rector again but without tests, since that failed.
+    #    php -d memory_limit=2G -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 -d upload_tmp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/rector process --config rector-no-tests.yml --verbose ${4#project_}s/contrib/$2 &>  /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector-no-tests_out 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector-no-tests_stderr
+    #  fi
+    #fi
 
     # Check if rector made any changes.
-    cd ${4#project_}s/contrib/$2
-    if [ -z "$(git status --porcelain)" ]; then
-      cd /var/lib/drupalci/workspace/drupal-checkouts/drupal$5
-      create_patch=0
-      php -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 -d upload_tmp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/test_error $1.$3
-      test_error_result=$?
-      if [ $test_error_result -eq 0 ]; then
-        # Run rector again but without tests, since that failed.
-        php -d memory_limit=2G -d sys_temp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 -d upload_tmp_dir=/var/lib/drupalci/workspace/drupal-checkouts/drupal$5 ./vendor/bin/rector process --config rector-no-tests.yml --verbose ${4#project_}s/contrib/$2 &>  /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector-no-tests_out 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector-no-tests_stderr
-      fi
-    fi
-
-    # Check again if rector made any changes.
     cd ${4#project_}s/contrib/$2
     if [ -z "$(git status --porcelain)" ]; then
       cd /var/lib/drupalci/workspace/drupal-checkouts/drupal$5
