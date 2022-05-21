@@ -26,6 +26,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $parameters->set(Option::SKIP, ['*/upgrade_status/tests/modules/*']);
     $parameters->set(Option::FILE_EXTENSIONS, ['php', 'module', 'theme', 'install', 'profile', 'inc', 'engine']);
+
+    // We need to disable importing of names since that breaks PhpDoc FQCNs.
     $parameters->set(Option::AUTO_IMPORT_NAMES, false);
     $parameters->set(Option::IMPORT_SHORT_CLASSES, false);
     // @phpstan-ignore-next-line
