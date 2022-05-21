@@ -13,6 +13,9 @@ composer --working-dir=/var/lib/drupalci/drupal-checkout require drupalorg_infra
 git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Update project analysis internal library"
 
+# Copy the configuration
+cp /var/lib/drupalci/drupal-checkout/vendor/palantirnet/drupal-rector/rector.php  /var/lib/drupalci/drupal-checkout/rector.php
+
 # Set up as many workspaces for running phpstan as many processor cores we have.
 PROC_COUNT=`grep processor /proc/cpuinfo |wc -l`
 parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/prepare_workspace.sh {} ::: $(seq -s' ' 1 ${PROC_COUNT})
