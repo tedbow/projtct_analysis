@@ -47,7 +47,7 @@ if [[ -d "$CHECKOUT_DIR/${4#project_}s/contrib/$2" ]]; then
     gitCommit ${4#project_}s/contrib/$2
     create_patch=1
     # Run rector to see if we can fix anything automatically.
-    php -d memory_limit=2G -d sys_temp_dir=$CHECKOUT_DIR -d upload_tmp_dir=$CHECKOUT_DIR ./vendor/bin/rector process --config $SCRIPT_DIR/rector.php --verbose ${4#project_}s/contrib/$2 &>  /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector_out 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector_stderr
+    php -d memory_limit=2G -d sys_temp_dir=$CHECKOUT_DIR -d upload_tmp_dir=$CHECKOUT_DIR ./vendor/bin/rector process --verbose ${4#project_}s/contrib/$2 &>  /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector_out 2>> /var/lib/drupalci/workspace/phpstan-results/$1.$3.rector_stderr
 
     # Disabled for now given the PHP based rector config.
     #cd ${4#project_}s/contrib/$2
