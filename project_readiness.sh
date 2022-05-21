@@ -4,6 +4,12 @@ set -eux
 # This file is intended to be executed on the testbot docker container.
 export PHPSTAN_RESULT_DIR="/var/lib/drupalci/workspace/phpstan-results"
 
+# This rector.php is no longer needed if this change is made here: https://github.com/palantirnet/drupal-rector/pull/194
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cp $SCRIPT_DIR/rector.php /var/lib/drupalci/drupal-checkout
+git -C /var/lib/drupalci/drupal-checkout add .
+git -C /var/lib/drupalci/drupal-checkout commit -q -m "Add new rector.php configuration"
+
 composer --working-dir=/var/lib/drupalci/drupal-checkout remove drupalorg_infrastructure/project_analysis_utils
 composer --working-dir=/var/lib/drupalci/drupal-checkout require drupalorg_infrastructure/project_analysis_utils
 git -C /var/lib/drupalci/drupal-checkout add .
