@@ -4,10 +4,6 @@ set -eux
 # This file is intended to be executed on the testbot docker container.
 export PHPSTAN_RESULT_DIR="/var/lib/drupalci/workspace/phpstan-results"
 
-# Make sure we run on the latest version available for this version of Drupal
-composer --working-dir=/var/lib/drupalci/drupal-checkout update drupal/rector
-composer --working-dir=/var/lib/drupalci/drupal-checkout update drupal/upgrade_status
-
 composer --working-dir=/var/lib/drupalci/drupal-checkout remove drupalorg_infrastructure/project_analysis_utils
 composer --working-dir=/var/lib/drupalci/drupal-checkout require drupalorg_infrastructure/project_analysis_utils
 git -C /var/lib/drupalci/drupal-checkout add .
