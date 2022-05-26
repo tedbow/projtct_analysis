@@ -16,13 +16,8 @@ create_patch=0
 CHECKOUT_DIR="/var/lib/drupalci/workspace/drupal-checkouts/drupal$5"
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-echo "--- Disk stats"
-df -h
-df -hi
-
-echo "--- Memory stats"
-free --giga -t
-
+# Extra logging for debugging
+DF_OUT=$(df -hi; df -h; free --mega)
 
 # Add the requested project to this composer environment ($5 is the number of this workspace, $1 is project name, $2 is the composer name and $3 is the version).
 cd $CHECKOUT_DIR
