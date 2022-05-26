@@ -29,4 +29,4 @@ parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/prepa
 # following form:
 # Project name<tab>Composer Namespace<tab>Branch<tab>Project type<tab>Drupal 10 readiness text<tab>project usage count<tab>release node id<tab>concat core_version_requirement
 # blazy	blazy	1.x-dev	project_module	NULL	55069	2663392	blazy_ui:subcomponent:"",blazy:primary:"^8 || ^9"
-time parallel --colsep '\t' --timeout 900 /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/analyzer.sh "{1}" "{2}" "{3}" "{4}" "{%}" "{8}" :::: /var/lib/drupalci/workspace/projects.tsv 2>&1 > /var/lib/drupalci/workspace/phpstan_output.txt
+time parallel --colsep '\t' --timeout 900 /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/analyzer.sh "{1}" "{2}" "{3}" "{4}" "{%}" "{8}" :::: /var/lib/drupalci/workspace/projects.tsv 2>&1
