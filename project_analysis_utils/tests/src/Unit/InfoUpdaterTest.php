@@ -49,92 +49,96 @@ class InfoUpdaterTest extends TestBase {
 
   public function providerUpdateInfoNew() {
     return [
-      // Test environment_indicator.3.x-dev no deprecations removed for 8.8
-      // or 8.7.
-      '^9' => [
-        'core_version_requirement_empty.info.yml',
+      '^9 in core version requirement' => [
+        'core_version_requirement_9.info.yml',
         'environment_indicator.3.x-dev',
         '^9 || ^10',
         FALSE,
       ],
-      '^10 existing' => [
+      '^9 || ^10 already in core version requirement' => [
         'core_version_requirement.info.yml',
         'environment_indicator.3.x-dev',
         '^9 || ^10',
         FALSE,
       ],
-      '^9 existing 9.1' => [
+      '^9.1 in core version requirement' => [
         'core_version_requirement_910.info.yml',
         'environment_indicator.3.x-dev',
         '^9.1.0 || ^10',
         FALSE,
       ],
-      '^9 existing 9.2' => [
+      '^9 deprecations with ^9.2 in core version requirement ' => [
         'core_version_requirement_920.info.yml',
         'environment_indicator.3.x-dev',
         '^9.2.0 || ^10',
         FALSE,
       ],
-      '^9 existing 9.3' => [
+      '^9 deprecations with ^9.3 in core version requirement' => [
         'core_version_requirement_930.info.yml',
         'environment_indicator.3.x-dev',
         '^9.3.0 || ^10',
         FALSE,
       ],
-      '^9 existing 9.4' => [
+      '^9 deprecations with ^9.4 in core version requirement' => [
         'core_version_requirement_940.info.yml',
         'environment_indicator.3.x-dev',
         '^9.4.0 || ^10',
         FALSE,
       ],
-      '^9 existing 9.5.0' => [
+      '^9 deprecations with ^9.5.0 in core version requirement' => [
         'core_version_requirement_950.info.yml',
         'environment_indicator.3.x-dev',
         '^9.5.0 || ^10',
         FALSE,
       ],
-      '9.1.0' => [
-        'core_version_requirement_empty.info.yml',
+      '9.1.0 deprecations with ^9 || ^10 in core version requirement' => [
+        'core_version_requirement_9.info.yml',
         'texbar.1.x-dev',
         '^9.1 || ^10',
         FALSE,
       ],
-      '9.1.0 existing ^9' => [
+      '9.1.0 deprecations with ^9 in core version requirement' => [
         'core_version_requirement.info.yml',
         'texbar.1.x-dev',
         '^9.1 || ^10',
         FALSE,
       ],
-      '9.1.0 existing ^9.1.0' => [
+      '9.1.0 deprecations with ^9.1.0 in core version requirement' => [
         'core_version_requirement_910.info.yml',
         'texbar.1.x-dev',
         '^9.1.0 || ^10',
         FALSE,
       ],
-      '9.1.0 existing ^9.2.0' => [
+      '9.1.0 deprecations with ^9.2.0 in core version requirement' => [
         'core_version_requirement_920.info.yml',
         'texbar.1.x-dev',
         '^9.2.0 || ^10',
         FALSE,
       ],
-      '9.1.0 existing ^9.3.0' => [
+      '9.1.0 deprecations with ^9.3.0 in core version requirement' => [
         'core_version_requirement_930.info.yml',
         'texbar.1.x-dev',
         '^9.3.0 || ^10',
         FALSE,
       ],
-      '9.1.0 existing ^9.4.0' => [
+      '9.1.0 deprecations with ^9.4.0 in core version requirement' => [
         'core_version_requirement_940.info.yml',
         'texbar.1.x-dev',
         '^9.4.0 || ^10',
         FALSE,
       ],
-      '9.1.0 existing ^9.5.0' => [
+      '9.1.0 deprecations with ^9.5.0 in core version requirement' => [
         'core_version_requirement_950.info.yml',
         'texbar.1.x-dev',
         '^9.5.0 || ^10',
         FALSE,
       ],
+      '^9.1.0 deprecations with ^9 in core version requirement AND core key' => [
+        'core_version_requirement_with_core_key.info.yml',
+        'texbar.1.x-dev',
+        '^9.1 || ^10',
+        TRUE
+      ]
     ];
   }
 

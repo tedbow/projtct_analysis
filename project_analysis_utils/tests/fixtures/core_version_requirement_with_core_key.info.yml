@@ -1,0 +1,4 @@
+name: test file
+type: module
+core: ^9
+core_version_requirement: ^9
