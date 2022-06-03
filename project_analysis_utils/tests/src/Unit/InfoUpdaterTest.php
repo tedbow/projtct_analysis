@@ -115,6 +115,16 @@ class InfoUpdaterTest extends TestBase {
         'core_version_requirement_with_core_key.info.yml',
         'texbar.1.x-dev',
         '^9.1 || ^10',
+      ],
+      '^9.1.0 deprecations with ^8 in core version requirements AND core key' => [
+        'core_version_requirement_8.info.yml',
+        'texbar.1.x-dev',
+        '^9.1 || ^10',
+      ],
+      '^8 in core version requirements AND core key' => [
+        'core_version_requirement_8.info.yml',
+        'environment_indicator.3.x-dev',
+        '^8 || ^9 || ^10',
       ]
     ];
   }

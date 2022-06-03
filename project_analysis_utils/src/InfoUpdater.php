@@ -70,7 +70,11 @@ class InfoUpdater extends ResultProcessorBase {
 
       // Only update if doesn't already satisfy 10.0.0, will only happen if $minimum_core_minor was 0.
       if (empty($new_core_version_requirement) && !Semver::satisfies('10.0.0', $info[static::KEY])) {
+        if (!Semver::satisfies('9.5', $info[static::KEY])) {
+          $info[static::KEY] = $info[static::KEY] . ' || ^9';
+        }
         $new_core_version_requirement = $info[static::KEY] . ' || ^10';
+
       }
     }
     if (!empty($new_core_version_requirement)) {
