@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+<checkstyle><file name="modules/contrib/country/country.info.yml"><error line="0" message="Value of core_version_requirement: ^8 || ^9 is not compatible with the next major version of Drupal core. See https://drupal.org/node/3070687." severity="error"/></file><file name="modules/contrib/country/composer.json"><error line="0" message="The drupal/core requirement is not compatible with the next major version of Drupal. Either remove it or update it to be compatible. See https://drupal.org/node/2514612#s-drupal-9-compatibility." severity="error"/></file></checkstyle>
+

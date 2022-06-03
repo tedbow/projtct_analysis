@@ -100,6 +100,40 @@ class UpdateStatusXmlChecker {
     return FALSE;
   }
 
+  /**
+   * Determines if the composer.json file can be updated.
+   *
+   * @return bool
+   */
+  public function isComposerUpdatable() {
+    if (empty($this->xml)) {
+      // If we don't have the upgrade_status xml we can't determine if we
+      // should update.
+      return FALSE;
+    }
+    if (count($this->xml->file) !== 1) {
+      // If there is problem with more than 1 file we can't update.
+      return FALSE;
+    }
+    foreach ($this->xml->file as $file) {
+      $parts = explode('.', (string) $file->attributes()->name);
+      $ext = array_pop($parts);
+      $filename = array_pop($parts);
+      // Make sure this is an 'info.yml' file.
+      if ($ext === 'json' && $filename === 'composer') {
+        // Make sure we only have one error in this one file.
+        if (count($file->error) === 2) {
+          $count = 0;
+          foreach ($file->error as $error) {
+            $message = (string) $error->attributes()['message'];
+            return preg_match('/The drupal\/core requirement is not compatible with the next major version of Drupal/', $message) === 1;
+          }
+        }
+      }
+    }
+    return FALSE;
+  }
+
   private function isPhpfile(\SimpleXMLElement $file) {
     $parts = explode('.', (string) $file->attributes()->name);
     $ext = array_pop($parts);
