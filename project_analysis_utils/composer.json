@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "symfony/yaml": "*",
-        "composer/semver": "*"
+        "composer/semver": "*",
+        "composer/composer": "*"
     },
     "bin": [
         "bin/rector_needed",
@@ -12,7 +13,9 @@
         "bin/update_info",
         "bin/restore_nonrector_changes",
         "bin/test_error",
-        "bin/find_machinename"
+        "bin/find_machinename",
+        "bin/composer_json_updatable",
+        "bin/update_composer_json"
     ],
     "autoload": {
         "psr-4": {
