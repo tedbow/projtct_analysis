@@ -1,5 +1,5 @@
 #!/bin/bash
-set -uxv
+set -ux
 
 # Arguments are
 # 1: project name, 2: composer name, 3: release version,
