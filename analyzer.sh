@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ux
+set -uxv
 
 # Arguments are
 # 1: project name, 2: composer name, 3: release version,
@@ -40,6 +40,7 @@ if [[ -d "$CHECKOUT_DIR/${4#project_}s/contrib/$2" ]]; then
   php -d sys_temp_dir=$CHECKOUT_DIR -d upload_tmp_dir=$CHECKOUT_DIR ./vendor/bin/rector_needed /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.pre_rector.xml
   rector_needed_result=$?
   info_updatable_result=1
+  composer_json_updatable_result=1
 
   # set this back to 0 when we figure what we need to do with rector
   if [ $rector_needed_result -eq 0 ]; then
@@ -75,6 +76,10 @@ if [[ -d "$CHECKOUT_DIR/${4#project_}s/contrib/$2" ]]; then
       # Check if the info file is updateable (only the info file error is left).
       php -d sys_temp_dir=$CHECKOUT_DIR -d upload_tmp_dir=$CHECKOUT_DIR ./vendor/bin/info_updatable /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.post_rector.xml
       info_updatable_result=$?
+
+      # Check if the composer.json is updateable (only the info file error is left).
+      php -d sys_temp_dir=$CHECKOUT_DIR -d upload_tmp_dir=$CHECKOUT_DIR ./vendor/bin/composer_json_updatable /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.post_rector.xml
+      composer_json_updatable_result=$?
     fi
 
   else
@@ -85,11 +90,26 @@ if [[ -d "$CHECKOUT_DIR/${4#project_}s/contrib/$2" ]]; then
       # Make sure to have a clean state for diffing later.
       gitCommit ${4#project_}s/contrib/$2
     fi
+
+    # Check if the composer.json is updateable (only the info file error is left).
+    php -d sys_temp_dir=$CHECKOUT_DIR -d upload_tmp_dir=$CHECKOUT_DIR ./vendor/bin/composer_json_updatable /var/lib/drupalci/workspace/phpstan-results/$1.$3.upgrade_status.pre_rector.xml
+    composer_json_updatable_result=$?
+
+    if [ $composer_json_updatable_result -eq 0 ]; then
+      # Make sure to have a clean state for diffing later.
+      gitCommit ${4#project_}s/contrib/$2
+    fi
   fi
 
   if [ $info_updatable_result -eq 0 ]; then
       # We decided the info file should be updated, so update it now.
       php -d sys_temp_dir=$CHECKOUT_DIR -d upload_tmp_dir=$CHECKOUT_DIR ./vendor/bin/update_info $CHECKOUT_DIR/${4#project_}s/contrib/$2/$module_name.info.yml $1.$3
+      create_patch=1
+  fi
+
+  if [ $composer_json_updatable_result -eq 0 ]; then
+      # We decided the info file should be updated, so update it now.
+      php -d sys_temp_dir=$CHECKOUT_DIR -d upload_tmp_dir=$CHECKOUT_DIR ./vendor/bin/update_composer_json $CHECKOUT_DIR/${4#project_}s/contrib/$2/composer.json $1.$3
       create_patch=1
   fi
 
