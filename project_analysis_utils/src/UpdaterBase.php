@@ -4,10 +4,10 @@ namespace InfoUpdater;
 
 use Composer\Semver\Semver;
 
-class UpdaterBase extends ResultProcessorBase {
+abstract class UpdaterBase extends ResultProcessorBase {
 
   /**
-   * Gets the error and warning messages for a upgrade_status xml file.
+   * Gets the error and warning messages for an upgrade_status xml file.
    *
    * @param string $project_version
    *
