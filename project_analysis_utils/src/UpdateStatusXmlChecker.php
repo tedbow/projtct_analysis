@@ -116,7 +116,7 @@ class UpdateStatusXmlChecker {
     $parts = explode('.', (string) $file->attributes()->name);
     $ext = array_pop($parts);
     // Assume all non-yml or twig files are php.
-    return !in_array($ext, ['yml', 'twig']);
+    return !in_array($ext, ['yml', 'twig', 'json']);
   }
 
   /**
