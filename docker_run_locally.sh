@@ -12,6 +12,11 @@ docker run -d --name project_analysis_local infrastructure/project_analysis
 # Copy the test set into the container
 docker cp ./project_analysis_utils/tests/project_list_files/projects_d10.tsv project_analysis_local:/var/lib/drupalci/workspace/projects.tsv
 
+# Want to do a full run? Use this link (or similar)
+# wget https://www.drupal.org/files/project_analysis/projects.tsv?125 -O projects.tsv
+# docker cp ./projects.tsv project_analysis_local:/var/lib/drupalci/workspace/projects.tsv
+
+
 # Copy current code into container
 docker cp ./. project_analysis_local:/var/lib/drupalci/workspace/infrastructure/stats/project_analysis
 
