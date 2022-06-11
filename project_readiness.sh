@@ -1,6 +1,10 @@
 #!/bin/bash
 set -eux
 
+# @todo remove this when the container is built again
+sudo apt-get -qq update
+sudo apt-get -qq install -y unzip
+
 # This file is intended to be executed on the testbot docker container.
 export PHPSTAN_RESULT_DIR="/var/lib/drupalci/workspace/phpstan-results"
 
