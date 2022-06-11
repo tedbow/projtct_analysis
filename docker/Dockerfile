@@ -13,6 +13,7 @@ RUN apt-get -qq update && apt-get -qq install -y --no-install-recommends \
     sudo \
     curl \
     zip \
+    unzip \
     wget \
     && rm -rf /var/lib/apt/lists/*
 

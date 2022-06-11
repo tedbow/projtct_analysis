@@ -10,6 +10,10 @@ cp $SCRIPT_DIR/rector.php /var/lib/drupalci/drupal-checkout
 git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Add new rector.php configuration"
 
+ composer --working-dir=/var/lib/drupalci/drupal-checkout remove palantirnet/drupal-rector --dev
+composer --working-dir=/var/lib/drupalci/drupal-checkout require palantirnet/drupal-rector --dev
+composer --working-dir=/var/lib/drupalci/drupal-checkout update drupal/upgrade_status
+
 composer --working-dir=/var/lib/drupalci/drupal-checkout remove drupalorg_infrastructure/project_analysis_utils
 composer --working-dir=/var/lib/drupalci/drupal-checkout require drupalorg_infrastructure/project_analysis_utils
 git -C /var/lib/drupalci/drupal-checkout add .
