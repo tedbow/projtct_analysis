@@ -9,8 +9,8 @@ sudo composer self-update
 # This file is intended to be executed on the testbot docker container.
 export PHPSTAN_RESULT_DIR="/var/lib/drupalci/workspace/phpstan-results"
 
-composer --working-dir=/var/lib/drupalci/drupal-checkout update drupal/upgrade_status
-composer --working-dir=/var/lib/drupalci/drupal-checkout require palantirnet/drupal-rector --dev -W
+# Require both libraries so composer figures out what the max version it can support. There is overlap in dependencies which makes this a puzzle.
+composer --working-dir=/var/lib/drupalci/drupal-checkout require drupal/upgrade_status:* palantirnet/drupal-rector:* --no-interaction
 git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Update drupal-rector and upgrade_status library"
 
