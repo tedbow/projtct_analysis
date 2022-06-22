@@ -10,7 +10,8 @@ sudo composer self-update
 export PHPSTAN_RESULT_DIR="/var/lib/drupalci/workspace/phpstan-results"
 
 # Require both libraries so composer figures out what the max version it can support. There is overlap in dependencies which makes this a puzzle.
-composer --working-dir=/var/lib/drupalci/drupal-checkout require drupal/upgrade_status:* palantirnet/drupal-rector:* --no-interaction
+composer --working-dir=/var/lib/drupalci/drupal-checkout remove palantirnet/drupal-rector --dev --no-update
+composer --working-dir=/var/lib/drupalci/drupal-checkout require drupal/upgrade_status palantirnet/drupal-rector -w --no-interaction
 git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Update drupal-rector and upgrade_status library"
 
