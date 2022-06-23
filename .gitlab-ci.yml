@@ -11,8 +11,19 @@ prepare-job:
     - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O /var/lib/drupalci/workspace/projects.tsv
     - rm -rf /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/*
     - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
+  artifacts:
+    paths:
+      - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
+      - /var/lib/drupalci/workspace/projects.tsv
 
 analyze-job:
   stage: analyze
+  dependencies:
+    - build
   script:
     - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
+  artifacts:
+    paths:
+      - /var/lib/drupalci/workspace/phpstan-results
+      - /var/lib/drupalci/workspace/projects.tsv
+    expire_in: 1 month
