@@ -26,4 +26,4 @@ analyze-job:
     paths:
       - /var/lib/drupalci/workspace/phpstan-results
       - /var/lib/drupalci/workspace/projects.tsv
-    expire_in: 1 month
+
