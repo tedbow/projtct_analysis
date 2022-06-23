@@ -11,6 +11,9 @@ function gitCommit() {
   git add .;git commit -q -m "git project before rector"
   cd -
 }
+
+echo "Analyze ${1}"
+
 create_patch=0
 
 CHECKOUT_DIR="/var/lib/drupalci/workspace/drupal-checkouts/drupal$5"
@@ -137,3 +140,5 @@ fi
 # Clean up this workspace for the next project.
 git reset --hard HEAD
 sudo git clean -ffd
+
+echo "Done analyzing ${1}"
