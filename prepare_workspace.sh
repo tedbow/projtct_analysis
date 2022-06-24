@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -eu
 
 # Set up this workspace to be ready to execute Upgrade Status and Drupal Rector.
 
