@@ -10,13 +10,19 @@ sudo composer self-update
 # This file is intended to be executed on the testbot docker container.
 export PHPSTAN_RESULT_DIR="/var/lib/drupalci/workspace/phpstan-results"
 
+# This rector.php is needed so autoloading doesnt break
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cp $SCRIPT_DIR/rector.php /var/lib/drupalci/drupal-checkout
+git -C /var/lib/drupalci/drupal-checkout add .
+git -C /var/lib/drupalci/drupal-checkout commit -q -m "Add new rector.php configuration"
+
 # Require both libraries so composer figures out what the max version it can support. There is overlap in dependencies which makes this a puzzle.
 composer --working-dir=/var/lib/drupalci/drupal-checkout remove palantirnet/drupal-rector --dev --no-update
 composer --working-dir=/var/lib/drupalci/drupal-checkout require drupal/upgrade_status palantirnet/drupal-rector -w --no-interaction
 git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Update drupal-rector and upgrade_status library"
 
-# Copy composer.lock after update
+# Update the drupal-composer.lock.json
 cp /var/lib/drupalci/drupal-checkout/composer.lock /var/lib/drupalci/workspace/phpstan-results/drupal-composer.lock.json
 
 composer --working-dir=/var/lib/drupalci/drupal-checkout remove drupalorg_infrastructure/project_analysis_utils
