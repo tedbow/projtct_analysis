@@ -12,9 +12,14 @@ analyze-job:
     - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
     - ls -la /var/lib/drupalci/workspace/
     - ls -la /var/lib/drupalci/workspace/phpstan-results/
+
+    - mkdir artifacts
+    - mv /var/lib/drupalci/workspace/phpstan-results artifacts
+    - mv /var/lib/drupalci/workspace/projects.tsv artifacts
+    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts
   artifacts:
     paths:
-      - /var/lib/drupalci/workspace/phpstan-results/
-      - /var/lib/drupalci/workspace/projects.tsv
-      - /var/lib/drupalci/workspace/analyzer_output.log
+      - projects.tsv
+      - analyzer_output.log
+      - phpstan-results
 

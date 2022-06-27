@@ -16,6 +16,9 @@ composer --working-dir=/var/lib/drupalci/drupal-checkout require drupal/upgrade_
 git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Update drupal-rector and upgrade_status library"
 
+# Copy composer.lock after update
+cp /var/lib/drupalci/drupal-checkout/composer.lock /var/lib/drupalci/workspace/phpstan-results/drupal-composer.lock.json
+
 composer --working-dir=/var/lib/drupalci/drupal-checkout remove drupalorg_infrastructure/project_analysis_utils
 composer --working-dir=/var/lib/drupalci/drupal-checkout require drupalorg_infrastructure/project_analysis_utils
 git -C /var/lib/drupalci/drupal-checkout add .
