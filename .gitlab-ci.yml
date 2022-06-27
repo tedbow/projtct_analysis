@@ -3,13 +3,14 @@ image: drupalci/static_analysis:9.4.x
 stages:
   - analyze
 
-prepare-job:
+analyze-job:
   stage: analyze
   script:
     - pwd
     - ls -la
     - rm -rf /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/*
-    - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
+    - ls -la /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
+    - cp -Rv ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
     - ls -la /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
 
     - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O /var/lib/drupalci/workspace/projects.tsv
