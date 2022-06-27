@@ -17,9 +17,10 @@ analyze-job:
     - mv /var/lib/drupalci/workspace/phpstan-results artifacts
     - mv /var/lib/drupalci/workspace/projects.tsv artifacts
     - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts
+    - ls -la artifacts
   artifacts:
     paths:
-      - projects.tsv
-      - analyzer_output.log
-      - phpstan-results
+      - artifacts/projects.tsv
+      - artifacts/analyzer_output.log
+      - artifacts/phpstan-results
 
