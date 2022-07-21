@@ -17,6 +17,8 @@
 ########################################
 # Running the production container
 ########################################
+# Remove existing container, usefull if this is a second run
+docker rm "project_analysis_local" -f
 
 # Remove existing container, usefull if this is a second run
 docker rm "project_analysis_local" -f
