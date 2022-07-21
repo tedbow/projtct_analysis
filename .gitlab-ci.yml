@@ -5,9 +5,13 @@ stages:
   - analyze-job
 
 analyze-job:
+  parallel: 5
+  retry: 2
   script:
     - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
-    - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O /var/lib/drupalci/workspace/projects.tsv
+    - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O projects.tsv
+    - split -n ${CI_NODE_INDEX}/${CI_NODE_TOTAL} projects.tsv > /var/lib/drupalci/workspace/projects.tsv
+
     - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
 
     - mkdir artifacts
