@@ -1,7 +1,7 @@
 image: drupalci/static_analysis:9.4.x
 
 stages:
-  - test
+  - run-tests
   - analyze-job
 
 analyze-job:
@@ -33,7 +33,7 @@ analyze-job:
     when: always
 
 test:
-  stage: test
+  stage: run-tests
   script:
     - cd project_analysis_utils
     - composer install
