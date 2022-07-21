@@ -29,6 +29,8 @@ analyze-job:
       - artifacts/projects.tsv
       - artifacts/analyzer_output.log
       - artifacts/phpstan-results
+    expire_in: "1 month"
+    when: always
 
 test:
   stage: test
@@ -49,4 +51,6 @@ test:
     paths:
       - artifacts/projects.tsv
       - artifacts/analyzer_output.log
-      - artifacts/phpstan-results    
+      - artifacts/phpstan-results
+    expire_in: "1 month"
+    when: always
