@@ -2,6 +2,7 @@ image: drupalci/static_analysis:9.4.x
 
 stages:
   - test
+  - analyze-job
 
 analyze-job:
   script:
@@ -13,6 +14,11 @@ analyze-job:
     - mv /var/lib/drupalci/workspace/phpstan-results artifacts
     - mv /var/lib/drupalci/workspace/projects.tsv artifacts
     - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+      allow_failure: true
+    - if: $CI_PIPELINE_SOURCE == "schedule"
   artifacts:
     expose_as: "project_analysis"
     paths:
