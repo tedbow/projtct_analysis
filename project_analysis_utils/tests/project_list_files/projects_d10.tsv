@@ -70,9 +70,6 @@ acquia_contenthub_unsubscribe_checkbox	acquia_contenthub_unsubscribe_checkbox	2.
 acquia_dam	acquia_dam	1.0.x-dev	project_module	NULL	NULL	3281352	acquia_dam_integration_links:subcomponent:">=9",acquia_dam:primary:">=9"
 acquiadam_asset_import	acquiadam_asset_import	1.x-dev	project_module	NULL	34	3035956	acquiadam_asset_import:primary:"^8 || ^9"
 acquiadam_asset_import	acquiadam_asset_import	2.0.x-dev	project_module	NULL	34	3249974	acquiadam_asset_import:primary:"^8 || ^9"
-acquia_lift	acquia_lift	4.x-dev	project_module	<ul>
-\n  <li></li>
-\n</ul>	1752	3054020	acquia_lift_publisher:subcomponent:"^8.7.7 || ^9",acquia_lift_inspector:subcomponent:"^8.7.7 || ^9",acquia_lift:primary:"^8.8 || ^9"
 acquia_pendo	acquia_pendo	1.x-dev	project_module	NULL	NULL	3120425	acquia_pendo:primary:"^8.8 || ^9"
 acquia_perz	acquia_perz	4.x-dev	project_module	NULL	NULL	3271555	acquia_perz_push:subcomponent:">=9.2",acquia_perz:primary:">=9.2"
 acquia_purge	acquia_purge	1.x-dev	project_module	NULL	12199	2796667	acquia_purge_geoip:subcomponent:"^8.9 || ^9",acquia_purge:primary:"^8.9 || ^9"
