@@ -1,10 +1,9 @@
 image: drupalci/static_analysis:9.4.x
 
 stages:
-  - analyze
+  - test
 
 analyze-job:
-  stage: analyze
   script:
     - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
     - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O /var/lib/drupalci/workspace/projects.tsv
@@ -15,8 +14,28 @@ analyze-job:
     - mv /var/lib/drupalci/workspace/projects.tsv artifacts
     - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts
   artifacts:
+    expose_as: "project_analysis"
     paths:
       - artifacts/projects.tsv
       - artifacts/analyzer_output.log
       - artifacts/phpstan-results
 
+test:
+  stage: test
+  script:
+    - cd project_analysis_utils
+    - composer install
+    - vendor/bin/phpunit
+    - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
+    - cp project_analysis_utils/tests/project_list_files/projects_d10.tsv /var/lib/drupalci/workspace/projects.tsv
+    - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
+    - mkdir artifacts
+    - mv /var/lib/drupalci/workspace/phpstan-results artifacts
+    - mv /var/lib/drupalci/workspace/projects.tsv artifacts
+    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts
+  artifacts:
+    expose_as: "analysis_testoutput"
+    paths:
+      - artifacts/projects.tsv
+      - artifacts/analyzer_output.log
+      - artifacts/phpstan-results    
