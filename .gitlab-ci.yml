@@ -33,13 +33,16 @@ analyze-job:
     expire_in: "1 month"
     when: always
 
-test:
+run-unit-tests:
   stage: run-tests
   script:
     - cd project_analysis_utils
     - composer install
     - vendor/bin/phpunit tests/
-    - cd ..
+
+run-bot-against-testset:
+  stage: run-tests
+  script:
     - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
     - cp project_analysis_utils/tests/project_list_files/projects_d10.tsv /var/lib/drupalci/workspace/projects.tsv
     - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
