@@ -5,6 +5,7 @@ stages:
   - analyze-job
 
 analyze-job:
+  stage: analyze-job
   parallel: 5
   retry: 2
   script:
