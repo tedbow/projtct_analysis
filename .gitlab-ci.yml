@@ -6,7 +6,7 @@ stages:
 
 analyze-job:
   stage: analyze-job
-  parallel: 5
+  parallel: 20
   retry: 2
   script:
     - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
