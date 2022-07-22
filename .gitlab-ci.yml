@@ -10,7 +10,10 @@ run-unit-tests:
   script:
     - cd project_analysis_utils
     - composer install
-    - vendor/bin/phpunit tests/
+    - vendor/bin/phpunit tests/ --log-junit ../phpunit-report.xml
+  artifacts:
+    reports:
+      junit: phpunit-report.xml
 
 run-bot-against-testset:
   stage: analyze-job
