@@ -52,7 +52,7 @@ analyze-job:
     - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
 
     - mv /var/lib/drupalci/workspace/phpstan-results/* artifacts/phpstan-results/
-    - mv /var/lib/drupalci/workspace/projects_${CI_NODE_INDEX}.tsv artifacts
+    - mv /var/lib/drupalci/workspace/projects.tsv artifacts/projects_${CI_NODE_INDEX}.tsv
     - mv /var/lib/drupalci/workspace/analyzer_output_${CI_NODE_INDEX}.log artifacts
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
