@@ -62,7 +62,6 @@ analyze-job:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_PIPELINE_SOURCE == "web"
   artifacts:
-    expose_as: "project_analysis_single"
     paths:
       - artifacts/projects.tsv
       - artifacts/projects_*.tsv
