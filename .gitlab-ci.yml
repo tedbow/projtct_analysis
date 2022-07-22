@@ -14,6 +14,8 @@ run-unit-tests:
   artifacts:
     reports:
       junit: phpunit-report.xml
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 run-bot-against-testset:
   stage: analyze-job
@@ -23,22 +25,25 @@ run-bot-against-testset:
     - echo "This run will analyze $(cat /var/lib/drupalci/workspace/projects.tsv | wc -l) projects."
     - echo "Starting at \"$(awk 'NR==1 {print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\" and end with \"$(awk 'END{print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\""
     - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
-    - mkdir artifacts
-    - mv /var/lib/drupalci/workspace/phpstan-results artifacts
-    - mv /var/lib/drupalci/workspace/projects.tsv artifacts
-    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts
+    - mkdir artifacts-testset
+    - mv /var/lib/drupalci/workspace/phpstan-results artifacts-testset
+    - mv /var/lib/drupalci/workspace/projects.tsv artifacts-testset
+    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts-testset
 
-    - PROJECTS_ANALYZED=$(cat ./artifacts/projects.tsv | wc -l)
+    - PROJECTS_ANALYZED=$(cat ./artifacts-testset/projects.tsv | wc -l)
+    - PATCH_COUNT=$(find ./artifacts-testset/phpstan-results -mindepth 1 -type f -name "*.patch" -printf x | wc -c)
     - echo "There were ${PROJECTS_ANALYZED} projects analyzed."
     - echo "This run generated ${PATCH_COUNT} patches."
   artifacts:
     expose_as: "analysis_testoutput"
     paths:
-      - artifacts/projects.tsv
-      - artifacts/analyzer_output.log
-      - artifacts/phpstan-results
+      - artifacts-testset/projects.tsv
+      - artifacts-testset/analyzer_output.log
+      - artifacts-testset/phpstan-results
     expire_in: "1 month"
     when: always
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
 analyze-job:
   stage: analyze-job
@@ -57,10 +62,7 @@ analyze-job:
     - mv /var/lib/drupalci/workspace/projects.tsv artifacts/projects_${CI_NODE_INDEX}.tsv
     - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts/analyzer_output_${CI_NODE_INDEX}.log
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
     - if: $CI_PIPELINE_SOURCE == "schedule"
-    - if: $CI_PIPELINE_SOURCE == "web"
   artifacts:
     paths:
       - artifacts/projects.tsv
@@ -89,7 +91,4 @@ package-artifacts:
       - artifacts/phpstan-results
     expire_in: "6 months"
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: manual
     - if: $CI_PIPELINE_SOURCE == "schedule"
-    - if: $CI_PIPELINE_SOURCE == "web"
