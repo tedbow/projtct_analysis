@@ -3,22 +3,23 @@ image: drupalci/static_analysis:9.4.x
 stages:
   - run-tests
   - analyze-job
+  - package-artifacts
 
 analyze-job:
   stage: analyze-job
   parallel: 20
-  retry: 2
   script:
+    - mkdir -p artifacts/phpstan-results
+
     - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
-    - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O projects.tsv
-    - split -n ${CI_NODE_INDEX}/${CI_NODE_TOTAL} projects.tsv > /var/lib/drupalci/workspace/projects.tsv
+    - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O artifacts/projects.tsv
+    - split -n ${CI_NODE_INDEX}/${CI_NODE_TOTAL} artifacts/projects.tsv > /var/lib/drupalci/workspace/projects.tsv
 
     - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
 
-    - mkdir artifacts
-    - mv /var/lib/drupalci/workspace/phpstan-results artifacts
-    - mv /var/lib/drupalci/workspace/projects.tsv artifacts
-    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts
+    - mv /var/lib/drupalci/workspace/phpstan-results/* artifacts/phpstan-results/
+    - mv /var/lib/drupalci/workspace/projects_${CI_NODE_INDEX}.tsv artifacts
+    - mv /var/lib/drupalci/workspace/analyzer_output_${CI_NODE_INDEX}.log artifacts
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
@@ -26,13 +27,37 @@ analyze-job:
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_PIPELINE_SOURCE == "web"
   artifacts:
-    expose_as: "project_analysis"
+    expose_as: "project_analysis_single"
     paths:
       - artifacts/projects.tsv
       - artifacts/analyzer_output.log
       - artifacts/phpstan-results
-    expire_in: "1 month"
+    expire_in: "1 hour"
     when: always
+
+package-artifacts:
+  stage: package-artifacts
+  script:
+    - echo "Packaging all results"
+    - PATCH_COUNT=$(find ./artifacts/phpstan-results -mindepth 1 -type f -name "*.patch" -printf x | wc -c)
+    - PROJECTS_ANALYZED=$(cat ./artifacts/projects.tsv  | wc -l)
+    - echo "There were ${PROJECTS_ANALYZED} projects analyzed."
+    - echo "This run generated ${PATCH_COUNT} patches."
+  needs:
+    - analyze-job
+  artifacts:
+    paths:
+      - artifacts/projects.tsv
+      - artifacts/projects_*.tsv
+      - artifacts/analyzer_output.log
+      - artifacts/phpstan-results
+    expire_in: "1 month"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+      allow_failure: true
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "web"
 
 run-unit-tests:
   stage: run-tests

@@ -31,7 +31,6 @@ git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Update project analysis internal library"
 
 # Set up as many workspaces for running phpstan as many processor cores we have.
-#PROC_COUNT=`grep processor /proc/cpuinfo |wc -l`
 PROC_COUNT=2
 echo "Preparing ${PROC_COUNT} workspaces"
 parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/prepare_workspace.sh {} ::: $(seq -s' ' 1 ${PROC_COUNT})
@@ -43,3 +42,5 @@ parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/prepa
 # blazy	blazy	1.x-dev	project_module	NULL	55069	2663392	blazy_ui:subcomponent:"",blazy:primary:"^8 || ^9"
 echo "Starting analysis with  ${PROC_COUNT} threads"
 time parallel -j${PROC_COUNT} --colsep '\t' --timeout 900 /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/analyzer.sh "{1}" "{2}" "{3}" "{4}" "{%}" "{8}" :::: /var/lib/drupalci/workspace/projects.tsv 2>&1 > /var/lib/drupalci/workspace/analyzer_output.log
+
+exit 0
