@@ -81,12 +81,11 @@ package-artifacts:
     paths:
       - artifacts/projects.tsv
       - artifacts/projects_*.tsv
-      - artifacts/analyzer_output.log
+      - artifacts/analyzer_outpu*.log
       - artifacts/phpstan-results
     expire_in: "1 month"
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
-      allow_failure: true
     - if: $CI_PIPELINE_SOURCE == "schedule"
     - if: $CI_PIPELINE_SOURCE == "web"
