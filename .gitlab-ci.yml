@@ -8,6 +8,7 @@ stages:
 analyze-job:
   stage: analyze-job
   parallel: 20
+  allow_failure: true
   script:
     - mkdir -p artifacts/phpstan-results
 
