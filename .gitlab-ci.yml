@@ -28,7 +28,7 @@ run-bot-against-testset:
     - mv /var/lib/drupalci/workspace/projects.tsv artifacts
     - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts
 
-    - PROJECTS_ANALYZED=$(cat ./artifacts/projects.tsv  | wc -l)
+    - PROJECTS_ANALYZED=$(cat ./artifacts/projects.tsv | wc -l)
     - echo "There were ${PROJECTS_ANALYZED} projects analyzed."
     - echo "This run generated ${PATCH_COUNT} patches."
   artifacts:
@@ -65,7 +65,8 @@ analyze-job:
     expose_as: "project_analysis_single"
     paths:
       - artifacts/projects.tsv
-      - artifacts/analyzer_output.log
+      - artifacts/projects_*.tsv
+      - artifacts/analyzer_output_*.log
       - artifacts/phpstan-results
     expire_in: "2 months"
     when: always
@@ -74,9 +75,10 @@ package-artifacts:
   stage: package-artifacts
   script:
     - echo "Packaging all results"
+    - RUN_ARTIFFACT_COUNT=$(find ./artifacts -mindepth 1 -type f -name "projects_*.tsv" -printf x | wc -c)
     - PATCH_COUNT=$(find ./artifacts/phpstan-results -mindepth 1 -type f -name "*.patch" -printf x | wc -c)
     - PROJECTS_ANALYZED=$(cat ./artifacts/projects.tsv  | wc -l)
-    - echo "There were ${PROJECTS_ANALYZED} projects analyzed."
+    - echo "There were ${PROJECTS_ANALYZED} projects analyzed split over ${RUN_ARTIFFACT_COUNT} different jobs."
     - echo "This run generated ${PATCH_COUNT} patches."
   needs:
     - analyze-job
