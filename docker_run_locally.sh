@@ -20,9 +20,6 @@
 # Remove existing container, usefull if this is a second run
 docker rm "project_analysis_local" -f
 
-# Remove existing container, usefull if this is a second run
-docker rm "project_analysis_local" -f
-
 # Run on the same container as on DrupalCI? Use this container
 docker run -d --name project_analysis_local drupalci/static_analysis:9.4.x
 
