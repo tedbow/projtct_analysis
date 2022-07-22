@@ -53,7 +53,7 @@ analyze-job:
 
     - mv /var/lib/drupalci/workspace/phpstan-results/* artifacts/phpstan-results/
     - mv /var/lib/drupalci/workspace/projects.tsv artifacts/projects_${CI_NODE_INDEX}.tsv
-    - mv /var/lib/drupalci/workspace/analyzer_output_${CI_NODE_INDEX}.log artifacts
+    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts/analyzer_output_${CI_NODE_INDEX}.log
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
