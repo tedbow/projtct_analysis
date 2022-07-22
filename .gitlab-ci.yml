@@ -5,6 +5,13 @@ stages:
   - analyze-job
   - package-artifacts
 
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
+    - if: $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
 run-unit-tests:
   stage: run-tests
   script:
@@ -15,7 +22,8 @@ run-unit-tests:
     reports:
       junit: phpunit-report.xml
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 run-bot-against-testset:
   stage: analyze-job
@@ -43,7 +51,8 @@ run-bot-against-testset:
     expire_in: "1 month"
     when: always
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 analyze-job:
   stage: analyze-job
