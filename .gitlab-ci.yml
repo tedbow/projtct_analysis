@@ -34,7 +34,7 @@ analyze-job:
       - artifacts/projects.tsv
       - artifacts/analyzer_output.log
       - artifacts/phpstan-results
-    expire_in: "4 hours"
+    expire_in: "5 hours"
     when: always
 
 package-artifacts:
