@@ -4,6 +4,7 @@ stages:
   - run-tests
   - analyze-job
   - package-artifacts
+  - release-results
 
 workflow:
   rules:
@@ -85,6 +86,7 @@ analyze-job:
 package-artifacts:
   stage: package-artifacts
   script:
+    - echo GE_JOB_ID=$CI_JOB_ID >> publish_results.env
     - echo "Packaging all results"
     - RUN_ARTIFFACT_COUNT=$(find ./artifacts -mindepth 1 -type f -name "projects_*.tsv" -printf x | wc -c)
     - PATCH_COUNT=$(find ./artifacts/phpstan-results -mindepth 1 -type f -name "*.patch" -printf x | wc -c)
@@ -100,5 +102,30 @@ package-artifacts:
       - artifacts/analyzer_outpu*.log
       - artifacts/phpstan-results
     expire_in: "6 months"
+    reports:
+      # To ensure we've access to this file in the next stage
+      dotenv: publish_results.env
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
+
+release-results:
+  stage: release-results
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - echo "Publising project analysis results"
+    - echo "Packages in ${ $GE_JOB_ID}"
+  # Specifying that this job requires artifacts from the previous job to succeed
+  needs:
+    - job: package-artifacts
+      artifacts: true
+  release:
+    name: 'Project analysis $CI_PIPELINE_CREATED_AT-$CI_PIPELINE_ID'
+    description: 'Project analysis results from $CI_PIPELINE_URL'
+    # tag_name is a mendatory field and can not be an empty string
+    tag_name: 'results-$CI_PIPELINE_ID-$CI_PIPELINE_CREATED_AT'
+    assets:
+      links:
+        - name: 'Project analysis results'
+          url: 'https://git.drupalcode.org/project/project_analysis/-/jobs/${GE_JOB_ID}/artifacts/download'
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"
