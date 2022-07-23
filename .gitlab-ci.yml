@@ -63,7 +63,7 @@ analyze-job:
 
     - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
     - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O artifacts/projects.tsv
-    - split -n ${CI_NODE_INDEX}/${CI_NODE_TOTAL} artifacts/projects.tsv > /var/lib/drupalci/workspace/projects.tsv
+    - split -n l/${CI_NODE_INDEX}/${CI_NODE_TOTAL} artifacts/projects.tsv > /var/lib/drupalci/workspace/projects.tsv
     - echo "This run will analyze $(cat /var/lib/drupalci/workspace/projects.tsv | wc -l) projects."
     - echo "Starting at \"$(awk 'NR==1 {print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\" and end with \"$(awk 'END{print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\""
     - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
