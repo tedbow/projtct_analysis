@@ -31,7 +31,7 @@ git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Update project analysis internal library"
 
 # Set up as many workspaces for running phpstan as many processor cores we have.
-PROC_COUNT=4
+PROC_COUNT=1
 echo "Preparing ${PROC_COUNT} workspaces"
 parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/prepare_workspace.sh {} ::: $(seq -s' ' 1 ${PROC_COUNT})
 
