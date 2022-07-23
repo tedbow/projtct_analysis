@@ -29,27 +29,26 @@ run-unit-tests:
 
 run-bot-against-testset:
   stage: analyze-job
+  parallel: 4
   script:
+    - mkdir -p artifacts/phpstan-results
     - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
-    - cp project_analysis_utils/tests/project_list_files/projects_d10.tsv /var/lib/drupalci/workspace/projects.tsv
+    - cp project_analysis_utils/tests/project_list_files/projects_d10.tsv artifacts/projects.tsv
+    - split -n l/${CI_NODE_INDEX}/${CI_NODE_TOTAL} artifacts/projects.tsv > /var/lib/drupalci/workspace/projects.tsv
     - echo "This run will analyze $(cat /var/lib/drupalci/workspace/projects.tsv | wc -l) projects."
     - echo "Starting at \"$(awk 'NR==1 {print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\" and end with \"$(awk 'END{print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\""
     - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
-    - mkdir artifacts-testset
-    - mv /var/lib/drupalci/workspace/phpstan-results artifacts-testset
-    - mv /var/lib/drupalci/workspace/projects.tsv artifacts-testset
-    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts-testset
 
-    - PROJECTS_ANALYZED=$(cat ./artifacts-testset/projects.tsv | wc -l)
-    - PATCH_COUNT=$(find ./artifacts-testset/phpstan-results -mindepth 1 -type f -name "*.patch" -printf x | wc -c)
-    - echo "There were ${PROJECTS_ANALYZED} projects analyzed."
-    - echo "This run generated ${PATCH_COUNT} patches."
+    - mv /var/lib/drupalci/workspace/phpstan-results/* artifacts/phpstan-results/
+    - mv /var/lib/drupalci/workspace/projects.tsv artifacts/projects_${CI_NODE_INDEX}.tsv
+    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts/analyzer_output_${CI_NODE_INDEX}.log
   artifacts:
     expose_as: "analysis_testoutput"
     paths:
-      - artifacts-testset/projects.tsv
-      - artifacts-testset/analyzer_output.log
-      - artifacts-testset/phpstan-results
+      - artifacts/projects.tsv
+      - artifacts/projects_*.tsv
+      - artifacts/analyzer_output_*.log
+      - artifacts/phpstan-results
     expire_in: "1 month"
     when: always
   rules:
@@ -61,7 +60,6 @@ analyze-job:
   parallel: 50
   script:
     - mkdir -p artifacts/phpstan-results
-
     - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
     - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O artifacts/projects.tsv
     - split -n l/${CI_NODE_INDEX}/${CI_NODE_TOTAL} artifacts/projects.tsv > /var/lib/drupalci/workspace/projects.tsv
@@ -93,8 +91,6 @@ package-artifacts:
     - PROJECTS_ANALYZED=$(cat ./artifacts/projects.tsv  | wc -l)
     - echo "There were ${PROJECTS_ANALYZED} projects analyzed split over ${RUN_ARTIFFACT_COUNT} different jobs."
     - echo "This run generated ${PATCH_COUNT} patches."
-  needs:
-    - analyze-job
   artifacts:
     paths:
       - artifacts/projects.tsv
@@ -107,6 +103,8 @@ package-artifacts:
       dotenv: publish_results.env
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
+    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
 release-results:
   stage: release-results
