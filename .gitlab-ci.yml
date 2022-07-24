@@ -4,7 +4,7 @@ stages:
   - run-tests
   - analyze-job
   - package-artifacts
-  - release-results
+  - release
 
 workflow:
   rules:
@@ -105,24 +105,29 @@ package-artifacts:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-release-results:
-  stage: release-results
+release:
+  stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
     - echo "Publising project analysis results"
     - echo "Packages in ${GE_JOB_ID}"
+    - |
+      release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
+        --assets-link "{\"name\":\"${DARWIN_AMD64_BINARY}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${DARWIN_AMD64_BINARY}\"}" \
+        --assets-link "{\"name\":\"${LINUX_AMD64_BINARY}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${LINUX_AMD64_BINARY}\"}"
   # Specifying that this job requires artifacts from the previous job to succeed
   needs:
     - job: package-artifacts
       artifacts: true
   release:
-    name: 'Project analysis $CI_PIPELINE_CREATED_AT-$CI_PIPELINE_ID'
-    description: 'Project analysis results from $CI_PIPELINE_URL'
+    name: 'Project analysis $CI_PIPELINE_CREATED_AT with id $CI_PIPELINE_ID'
+    description: 'Project analysis results from $CI_PIPELINE_ID'
     # tag_name is a mendatory field and can not be an empty string
-    tag_name: 'results-$CI_PIPELINE_ID-$CI_PIPELINE_CREATED_AT'
+    tag_name: 'results-$CI_PIPELINE_ID'
     assets:
       links:
-        - name: 'Project analysis results'
+        - name: 'archive.zip'
           url: 'https://git.drupalcode.org/project/project_analysis/-/jobs/${GE_JOB_ID}/artifacts/download'
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == "push"
