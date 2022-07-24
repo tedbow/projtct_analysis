@@ -110,7 +110,7 @@ release-results:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
     - echo "Publising project analysis results"
-    - echo "Packages in ${ $GE_JOB_ID}"
+    - echo "Packages in ${GE_JOB_ID}"
   # Specifying that this job requires artifacts from the previous job to succeed
   needs:
     - job: package-artifacts
