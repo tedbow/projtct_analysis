@@ -103,6 +103,22 @@ package-artifacts:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
+
+commit-artifacts:
+  stage: release
+  script:
+    - git switch results
+    - git add artifacts
+    - git commit -m "Run ${CI_PIPELINE_ID} of project analysis"
+    - git tag ${CI_PIPELINE_ID}
+    - git push && git push --tags
+  needs:
+    - job: package-artifacts
+      artifacts: true
+  rules:
+    #- if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PIPELINE_SOURCE == "push"
+
 release-artifacts:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
