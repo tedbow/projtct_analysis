@@ -105,9 +105,13 @@ package-artifacts:
 
 
 commit-artifacts:
+  image: alpine/git
   stage: release
   script:
+    - git remote -v
+    - git branch -v
     - git switch results
+    - git branch -v
     - git add artifacts
     - git commit -m "Run ${CI_PIPELINE_ID} of project analysis"
     - git tag ${CI_PIPELINE_ID}
