@@ -108,9 +108,10 @@ commit-artifacts:
   image: alpine/git
   stage: release
   script:
+    - git fetch origin
     - git remote -v
     - git branch -v
-    - git switch results
+    - git checkout --track origin/results
     - git branch -v
     - git add artifacts
     - git commit -m "Run ${CI_PIPELINE_ID} of project analysis"
