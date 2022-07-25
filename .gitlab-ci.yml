@@ -103,17 +103,18 @@ package-artifacts:
     - if: $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-
 commit-artifacts:
   image: alpine/git
   stage: release
   script:
     - git fetch origin
     - git checkout --track origin/results
+    - rm -rf results/*
+    - mv artifact/* results/
+    - git add results
     - git remote set-url origin https://gitlab-access-token:${GITLAB_ACCESS_TOKEN}@git.drupalcode.org/project/project_analysis.git 
     - git config --global user.name "Björn Brala"
     - git config --global user.email "bjorn@swis.nl"
-    - git add artifacts
     - git commit -m "Run ${CI_PIPELINE_ID} of project analysis"
     - git tag ${CI_PIPELINE_ID}
     - git push && git push --tags
