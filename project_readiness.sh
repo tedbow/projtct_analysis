@@ -42,5 +42,3 @@ parallel /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/prepa
 # blazy	blazy	1.x-dev	project_module	NULL	55069	2663392	blazy_ui:subcomponent:"",blazy:primary:"^8 || ^9"
 echo "Starting analysis with  ${PROC_COUNT} threads"
 time parallel -j${PROC_COUNT} --colsep '\t' --timeout 900 /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/analyzer.sh "{1}" "{2}" "{3}" "{4}" "{%}" "{8}" :::: /var/lib/drupalci/workspace/projects.tsv 2>&1 > /var/lib/drupalci/workspace/analyzer_output.log
-
-exit 0
