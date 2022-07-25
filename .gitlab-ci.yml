@@ -13,6 +13,18 @@ workflow:
       when: never
     - if: $CI_COMMIT_BRANCH
 
+
+.analyze-projects-script: &analyze-projects-script
+  - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
+  - split -n l/${CI_NODE_INDEX}/${CI_NODE_TOTAL} artifacts/projects.tsv > /var/lib/drupalci/workspace/projects.tsv
+  - echo "This run will analyze $(cat /var/lib/drupalci/workspace/projects.tsv | wc -l) projects."
+  - echo "Starting at \"$(awk 'NR==1 {print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\" and end with \"$(awk 'END{print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\""
+  - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
+
+  - mv /var/lib/drupalci/workspace/phpstan-results/* artifacts/phpstan-results/
+  - mv /var/lib/drupalci/workspace/projects.tsv artifacts/projects_${CI_NODE_INDEX}.tsv
+  - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts/analyzer_output_${CI_NODE_INDEX}.log
+
 run-unit-tests:
   stage: run-tests
   script:
@@ -32,16 +44,8 @@ run-bot-against-testset:
   parallel: 4
   script:
     - mkdir -p artifacts/phpstan-results
-    - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
     - cp project_analysis_utils/tests/project_list_files/projects_d10.tsv artifacts/projects.tsv
-    - split -n l/${CI_NODE_INDEX}/${CI_NODE_TOTAL} artifacts/projects.tsv > /var/lib/drupalci/workspace/projects.tsv
-    - echo "This run will analyze $(cat /var/lib/drupalci/workspace/projects.tsv | wc -l) projects."
-    - echo "Starting at \"$(awk 'NR==1 {print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\" and end with \"$(awk 'END{print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\""
-    - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
-
-    - mv /var/lib/drupalci/workspace/phpstan-results/* artifacts/phpstan-results/
-    - mv /var/lib/drupalci/workspace/projects.tsv artifacts/projects_${CI_NODE_INDEX}.tsv
-    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts/analyzer_output_${CI_NODE_INDEX}.log
+    - *analyze-projects-script
   artifacts:
     paths:
       - artifacts/projects.tsv
@@ -59,16 +63,8 @@ analyze-job:
   parallel: 50
   script:
     - mkdir -p artifacts/phpstan-results
-    - cp -R ./* /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/
     - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O artifacts/projects.tsv
-    - split -n l/${CI_NODE_INDEX}/${CI_NODE_TOTAL} artifacts/projects.tsv > /var/lib/drupalci/workspace/projects.tsv
-    - echo "This run will analyze $(cat /var/lib/drupalci/workspace/projects.tsv | wc -l) projects."
-    - echo "Starting at \"$(awk 'NR==1 {print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\" and end with \"$(awk 'END{print $1; exit}' /var/lib/drupalci/workspace/projects.tsv)\""
-    - /var/lib/drupalci/workspace/infrastructure/stats/project_analysis/project_readiness.sh 9.4.x || true
-
-    - mv /var/lib/drupalci/workspace/phpstan-results/* artifacts/phpstan-results/
-    - mv /var/lib/drupalci/workspace/projects.tsv artifacts/projects_${CI_NODE_INDEX}.tsv
-    - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts/analyzer_output_${CI_NODE_INDEX}.log
+    - *analyze-projects-script
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
   artifacts:
