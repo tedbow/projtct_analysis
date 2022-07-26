@@ -122,5 +122,4 @@ commit-artifacts:
     - job: package-artifacts
       artifacts: true
   rules:
-    #- if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"
-    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"
