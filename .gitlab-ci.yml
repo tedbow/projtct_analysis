@@ -1,9 +1,9 @@
 
 stages:
   - run-tests
-  - analyze-job
-  - package-artifacts
-  - release
+#  - analyze-job
+#  - package-artifacts
+#  - release
 
 workflow:
   rules:
