@@ -109,6 +109,7 @@ commit-artifacts:
   script:
     - git fetch origin
     - git checkout --track origin/results
+    - ls -la
     - rm -rf results/*
     - mv artifact/* results/
     - git add results
