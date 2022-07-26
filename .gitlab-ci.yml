@@ -66,7 +66,7 @@ run-bot-against-testset:
       - artifacts/projects_*.tsv
       - artifacts/analyzer_output_*.log
       - artifacts/phpstan-results
-    expire_in: "1 month"
+    expire_in: "7 days"
     when: always
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
@@ -88,7 +88,7 @@ analyze-job:
       - artifacts/projects_*.tsv
       - artifacts/analyzer_output_*.log
       - artifacts/phpstan-results
-    expire_in: "2 months"
+    expire_in: "7 days"
     when: always
 
 package-artifacts:
@@ -107,7 +107,7 @@ package-artifacts:
       - artifacts/projects_*.tsv
       - artifacts/analyzer_outpu*.log
       - artifacts/phpstan-results
-    expire_in: "6 months"
+    expire_in: "2 months"
     reports:
       # To ensure we've access to this file in the next stage
       dotenv: publish_results.env
