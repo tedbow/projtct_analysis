@@ -109,9 +109,8 @@ commit-artifacts:
   script:
     - git fetch origin
     - git checkout --track origin/results
-    - ls -la
     - rm -rf results/*
-    - mv artifact/* results/
+    - mv artifacts/* results/
     - git add results
     - git remote set-url origin https://gitlab-access-token:${GITLAB_ACCESS_TOKEN}@git.drupalcode.org/project/project_analysis.git 
     - git config --global user.name "Björn Brala"
