@@ -35,7 +35,7 @@ workflow:
   - git config --global user.email "bjorn@swis.nl"
   - git commit -m "Run ${CI_PIPELINE_ID} of project analysis"
   - git tag ${CI_PIPELINE_ID}
-  - git push && git push --tags
+  - git push
 
 run-unit-tests:
   image: drupalci/static_analysis:9.4.x
@@ -123,6 +123,7 @@ commit-artifacts:
     - git fetch origin
     - git checkout --track origin/results
     - *commit-results
+    - git push --tags
   needs:
     - job: package-artifacts
       artifacts: true
