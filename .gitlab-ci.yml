@@ -24,6 +24,19 @@ workflow:
   - mv /var/lib/drupalci/workspace/projects.tsv artifacts/projects_${CI_NODE_INDEX}.tsv
   - mv /var/lib/drupalci/workspace/analyzer_output.log artifacts/analyzer_output_${CI_NODE_INDEX}.log
 
+.commit-results: &commit-results
+  - rm -rf results/*
+  - mv artifacts/* results/
+  - sed -i --expression='s/\/drupal[[:digit:]]\{1,2\}\//\/drupalxxx\//g' results/*.log
+  - sed -i --expression='s/\/drupal[[:digit:]]\{1,2\}\//\/drupalxxx\//g' results/phpstan-results/*
+  - git add results
+  - git remote set-url origin https://gitlab-access-token:${GITLAB_ACCESS_TOKEN}@git.drupalcode.org/project/project_analysis.git 
+  - git config --global user.name "Björn Brala"
+  - git config --global user.email "bjorn@swis.nl"
+  - git commit -m "Run ${CI_PIPELINE_ID} of project analysis"
+  - git tag ${CI_PIPELINE_ID}
+  - git push && git push --tags
+
 run-unit-tests:
   image: drupalci/static_analysis:9.4.x
   stage: run-tests
@@ -109,18 +122,22 @@ commit-artifacts:
   script:
     - git fetch origin
     - git checkout --track origin/results
-    - rm -rf results/*
-    - mv artifacts/* results/
-    - git add results
-    - git remote set-url origin https://gitlab-access-token:${GITLAB_ACCESS_TOKEN}@git.drupalcode.org/project/project_analysis.git 
-    - git config --global user.name "Björn Brala"
-    - git config --global user.email "bjorn@swis.nl"
-    - git commit -m "Run ${CI_PIPELINE_ID} of project analysis"
-    - git tag ${CI_PIPELINE_ID}
-    - git push && git push --tags
+    - *commit-results
   needs:
     - job: package-artifacts
       artifacts: true
   rules:
-    # - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"
-    - if: $CI_PIPELINE_SOURCE == "push"
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == "master"
+
+commit-artifacts-testset:
+  image: alpine/git
+  stage: release
+  script:
+    - git fetch origin
+    - git checkout --track origin/results-testset
+    - *commit-results
+  needs:
+    - job: package-artifacts
+      artifacts: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "master"
