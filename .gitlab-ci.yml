@@ -75,7 +75,7 @@ run-bot-against-testset:
 analyze-job:
   image: drupalci/static_analysis:9.4.x
   stage: analyze-job
-  parallel: 10
+  parallel: 50
   script:
     - mkdir -p artifacts/phpstan-results
     - wget https://www.drupal.org/files/project_analysis/projects.tsv?$CI_JOB_ID -O artifacts/projects.tsv
