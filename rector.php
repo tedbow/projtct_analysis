@@ -32,6 +32,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
       '*/upgrade_status/tests/modules/*',
       '*/ProxyClass/*',
+      '*/tests/fixtures/*',
     ]);
     $rectorConfig->fileExtensions(['php', 'module', 'theme', 'install', 'profile', 'inc', 'engine']);
     $rectorConfig->importNames(true, false);
