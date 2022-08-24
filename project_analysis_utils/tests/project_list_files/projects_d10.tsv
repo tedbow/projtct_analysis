@@ -1,3 +1,4 @@
+activitypub	activitypub	1.0.x-dev	project_module	NULL	9	3166419	activitypub:primary:"^8.8 || ^9"
 captcha	captcha	1.x-dev	project_module	NULL	110359	2023197	captcha_test:subcomponent:"^8.8 || ^9",captcha_long_form_id_test:subcomponent:"^8.8 claro_extras	claro_extras	1.0.x-dev	project_module	NULL	356	3161315	claro_extras:primary:"^8 || ^9"
 claro_extras	claro_extras	2.0.x-dev	project_module	NULL	356	3260648	claro_extras:primary:"^9.1"
 cms_content_sync	cms_content_sync	1.x-dev	project_module	NULL	982	2991922	cms_content_sync_views:subcomponent:"^8 || ^9",cms_content_sync_simple_sitemap:subcomponent:"^8 || ^9",cms_content_sync_migrate_acquia_content_hub:subcomponent:"^8 || ^9",cms_content_sync_health:subcomponent:"^8 || ^9",cms_content_sync_draggableviews:subcomponent:"^8 || ^9",cms_content_sync_developer:subcomponent:"^8 || ^9",cms_content_sync:primary:"^8 || ^9"
