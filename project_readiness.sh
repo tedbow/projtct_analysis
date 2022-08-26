@@ -30,6 +30,10 @@ composer --working-dir=/var/lib/drupalci/drupal-checkout require drupalorg_infra
 git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Update project analysis internal library"
 
+composer --working-dir=/var/lib/drupalci/drupal-checkout config prefer-stable false
+git -C /var/lib/drupalci/drupal-checkout add .
+git -C /var/lib/drupalci/drupal-checkout commit -q -m "Don't prefer stable here"
+
 # Set up as many workspaces for running phpstan as many processor cores we have.
 PROC_COUNT=2
 echo "Preparing ${PROC_COUNT} workspaces"
