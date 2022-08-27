@@ -1,0 +1,7 @@
+{
+  "patches": {
+    "drupal/upgrade_status": {
+      "Enable phpstan debug": "upgrade_status_debug.patch"
+    }
+  }
+}

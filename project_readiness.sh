@@ -16,6 +16,15 @@ cp $SCRIPT_DIR/rector.php /var/lib/drupalci/drupal-checkout
 git -C /var/lib/drupalci/drupal-checkout add .
 git -C /var/lib/drupalci/drupal-checkout commit -q -m "Add new rector.php configuration"
 
+# Prepare debug patch
+composer --working-dir=/var/lib/drupalci/drupal-checkout config --no-plugins allow-plugins.cweagans/composer-patches true
+composer --working-dir=/var/lib/drupalci/drupal-checkout require cweagans/composer-patches --no-interaction --no-progress
+cp $SCRIPT_DIR/patches.json /var/lib/drupalci/drupal-checkout
+cp $SCRIPT_DIR/upgrade_status_debug.patch /var/lib/drupalci/drupal-checkout
+composer --working-dir=/var/lib/drupalci/drupal-checkout config extra.patches-file "./patches.json"
+git -C /var/lib/drupalci/drupal-checkout add .
+git -C /var/lib/drupalci/drupal-checkout commit -q -m "More debug information"
+
 # Require both libraries so composer figures out what the max version it can support. There is overlap in dependencies which makes this a puzzle.
 composer --working-dir=/var/lib/drupalci/drupal-checkout remove palantirnet/drupal-rector --dev --no-update
 composer --working-dir=/var/lib/drupalci/drupal-checkout require drupal/upgrade_status palantirnet/drupal-rector -w --no-interaction

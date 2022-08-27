@@ -1,0 +1,15 @@
+diff --git a/src/DeprecationAnalyzer.php b/src/DeprecationAnalyzer.php
+index 29eb75d..7fac32b 100644
+--- a/src/DeprecationAnalyzer.php
++++ b/src/DeprecationAnalyzer.php
+@@ -347,8 +347,9 @@ final class DeprecationAnalyzer {
+       $this->phpPath,
+       $this->binPath . '/phpstan',
+       'analyse',
+-      '--memory-limit=-1',
++      '--memory-limit=1.5G',
+       '--error-format=json',
++      '-vvv',
+       '--configuration=' . $this->phpstanNeonPath,
+       $project_dir,
+     ];
