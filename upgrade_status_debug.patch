@@ -1,15 +1,94 @@
+diff --git a/src/Commands/UpgradeStatusCommands.php b/src/Commands/UpgradeStatusCommands.php
+index 9e3de54731930c3cb375f8db4e5d386e3d01f0c3..4890294748cacee0703a97c26577efe77f6804bf 100644
+--- a/src/Commands/UpgradeStatusCommands.php
++++ b/src/Commands/UpgradeStatusCommands.php
+@@ -80,12 +80,13 @@ class UpgradeStatusCommands extends DrushCommands {
+    * @option ignore-uninstalled Ignore uninstalled projects.
+    * @option ignore-contrib Ignore contributed projects.
+    * @option ignore-custom Ignore custom projects.
++   * @option phpstan-memory-limit Set memory limit for PHPStan.
+    * @aliases us-cs
+    *
+    * @throws \InvalidArgumentException
+    *   Thrown when one of the passed arguments is invalid or no arguments were provided.
+    */
+-  public function checkstyle(array $projects, array $options = ['all' => FALSE, 'skip-existing' => FALSE, 'ignore-uninstalled' => FALSE, 'ignore-contrib' => FALSE, 'ignore-custom' => FALSE]) {
++  public function checkstyle(array $projects, array $options = ['all' => FALSE, 'skip-existing' => FALSE, 'ignore-uninstalled' => FALSE, 'ignore-contrib' => FALSE, 'ignore-custom' => FALSE, 'phpstan-memory-limit' => '1500M']) {
+     $extensions = $this->doAnalyze($projects, $options);
+     $xml = new \SimpleXMLElement("<?xml version='1.0'?><checkstyle/>");
+
+@@ -136,12 +137,13 @@ class UpgradeStatusCommands extends DrushCommands {
+    * @option ignore-uninstalled Ignore uninstalled projects.
+    * @option ignore-contrib Ignore contributed projects.
+    * @option ignore-custom Ignore custom projects.
++   * @option phpstan-memory-limit Set memory limit for PHPStan.
+    * @aliases us-a
+    *
+    * @throws \InvalidArgumentException
+    *   Thrown when one of the passed arguments is invalid or no arguments were provided.
+    */
+-  public function analyze(array $projects, array $options = ['all' => FALSE, 'skip-existing' => FALSE, 'ignore-uninstalled' => FALSE, 'ignore-contrib' => FALSE, 'ignore-custom' => FALSE]) {
++  public function analyze(array $projects, array $options = ['all' => FALSE, 'skip-existing' => FALSE, 'ignore-uninstalled' => FALSE, 'ignore-contrib' => FALSE, 'ignore-custom' => FALSE, 'phpstan-memory-limit' => '1500M']) {
+     $extensions = $this->doAnalyze($projects, $options);
+
+     foreach ($extensions as $type => $list) {
+@@ -177,11 +179,12 @@ class UpgradeStatusCommands extends DrushCommands {
+    * @option ignore-uninstalled Ignore uninstalled projects.
+    * @option ignore-contrib Ignore contributed projects.
+    * @option ignore-custom Ignore custom projects.
++   * @option phpstan-memory-limit Set memory limit for PHPStan (default: 1500M).
+    *
+    * @throws \InvalidArgumentException
+    *   Thrown when one of the passed arguments is invalid or no arguments were provided.
+    */
+-  public function doAnalyze(array $projects, array $options = ['all' => FALSE, 'skip-existing' => FALSE, 'ignore-uninstalled' => FALSE, 'ignore-contrib' => FALSE, 'ignore-custom' => FALSE]) {
++  public function doAnalyze(array $projects, array $options = ['all' => FALSE, 'skip-existing' => FALSE, 'ignore-uninstalled' => FALSE, 'ignore-contrib' => FALSE, 'ignore-custom' => FALSE, 'phpstan-memory-limit' => '1500M']) {
+     // Group by type here so we can tell loader what is type of each one of
+     // these.
+     $extensions = [];
+@@ -258,7 +261,7 @@ class UpgradeStatusCommands extends DrushCommands {
+           }
+         }
+         $this->logger()->info(dt('Processing @name.', ['@name' => $name]));
+-        $this->deprecationAnalyzer->analyze($extension);
++        $this->deprecationAnalyzer->analyze($extension, $options);
+       }
+     }
+
 diff --git a/src/DeprecationAnalyzer.php b/src/DeprecationAnalyzer.php
-index 29eb75d..7fac32b 100644
+index 29eb75d1d04be9c16bf41563e469a69e72611b5b..6df5c69a7d62f6dccc87a8e837dfb32ff1110d56 100644
 --- a/src/DeprecationAnalyzer.php
 +++ b/src/DeprecationAnalyzer.php
-@@ -347,8 +347,9 @@ final class DeprecationAnalyzer {
+@@ -323,11 +323,13 @@ final class DeprecationAnalyzer {
+    *
+    * @param \Drupal\Core\Extension\Extension $extension
+    *   The extension to analyze.
++   * @param array $options
++   *   Options for the analysis.
+    *
+    * @return null
+    *   Errors are logged to the logger, data is stored to keyvalue storage.
+    */
+-  public function analyze(Extension $extension) {
++  public function analyze(Extension $extension, array $options = []) {
+     try {
+       $this->initEnvironment();
+     }
+@@ -343,14 +345,15 @@ final class DeprecationAnalyzer {
+     $project_dir = DRUPAL_ROOT . '/' . $extension->getPath();
+     $this->logger->notice('Processing %path.', ['%path' => $project_dir]);
+
++    $memory_limit = $options['phpstan-memory-limit'] ?? '1500M';
+     $command = [
        $this->phpPath,
        $this->binPath . '/phpstan',
        'analyse',
 -      '--memory-limit=-1',
-+      '--memory-limit=1.5G',
++      '--memory-limit=' . $memory_limit,
        '--error-format=json',
-+      '-vvv',
        '--configuration=' . $this->phpstanNeonPath,
-       $project_dir,
+-      $project_dir,
++      $project_dir
      ];
+
+     $process = new Process($command, DRUPAL_ROOT, NULL, NULL, NULL);
