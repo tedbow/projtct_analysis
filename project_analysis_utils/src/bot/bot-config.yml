@@ -1,0 +1,6 @@
+new_issue_values:
+  edit-title: 'Automated Drupal 10 compatibility fixes'
+  edit-field-issue-category-und: '2'
+  edit-field-issue-component-und: 'Code'
+  edit-taxonomy-vocabulary-9-und: 'ProjectUpdateBotD10, Drupal 10 compatibility'
+auto_tag: 'ProjectUpdateBotD10'
